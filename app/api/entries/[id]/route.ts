@@ -3,17 +3,22 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
-export async function DELETE(_req: Request, { params }: { params: { id: string } }) {
+export async function DELETE(
+  _req: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const entry = await prisma.entry.findUnique({ where: { id: params.id } });
+  const { id } = await params;
+
+  const entry = await prisma.entry.findUnique({ where: { id } });
   if (!entry || entry.userId !== session.user.id) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
 
-  await prisma.entry.delete({ where: { id: params.id } });
+  await prisma.entry.delete({ where: { id } });
   return NextResponse.json({ ok: true });
 }
