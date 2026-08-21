@@ -1,0 +1,9 @@
+{
+  "name": "Tržby — Income Ledger",
+  "short_name": "Tržby",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#182019",
+  "theme_color": "#182019",
+  "icons": []
+}
