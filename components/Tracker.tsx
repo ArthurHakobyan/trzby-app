@@ -255,33 +255,42 @@ export default function Tracker({ userName }: { userName: string }) {
           )}
         </div>
 
+        
+
         {expandedDay && byDay[expandedDay] && (
-          <div className="list-card">
-            <div className="section-label">
-              {(() => {
-                const dt = new Date(expandedDay + "T00:00:00");
-                return `${weekday[dt.getDay()]} ${dt.getDate()} ${monthNames[dt.getMonth()]}`;
-              })()}
+  <div className="list-card">
+    <div className="section-label">
+      {(() => {
+        const dt = new Date(expandedDay + "T00:00:00");
+        return `${weekday[dt.getDay()]} ${dt.getDate()} ${monthNames[dt.getMonth()]}`;
+      })()}
+    </div>
+    <div className="day-detail">
+      {byDay[expandedDay].list
+        .slice()
+        .sort((a, b) => a.createdAt.localeCompare(b.createdAt))
+        .map((e) => {
+          const t = new Date(e.createdAt);
+          return (
+            <div className="entry-row" key={e.id}>
+              <div className="entry-left">
+                <span className={`tag ${e.type}`}>{e.type}</span>
+                <span className="entry-time">{pad2(t.getHours())}:{pad2(t.getMinutes())}</span>
+              </div>
+              <span className="entry-amt">{fmt(e.amount)}</span>
             </div>
-            <div className="day-detail">
-              {byDay[expandedDay].list
-                .slice()
-                .sort((a, b) => a.createdAt.localeCompare(b.createdAt))
-                .map((e) => {
-                  const t = new Date(e.createdAt);
-                  return (
-                    <div className="entry-row" key={e.id}>
-                      <div className="entry-left">
-                        <span className={`tag ${e.type}`}>{e.type}</span>
-                        <span className="entry-time">{pad2(t.getHours())}:{pad2(t.getMinutes())}</span>
-                      </div>
-                      <span className="entry-amt">{fmt(e.amount)}</span>
-                    </div>
-                  );
-                })}
-            </div>
-          </div>
-        )}
+          );
+        })}
+    </div>
+    <div className="totals" style={{ background: "transparent", padding: "10px 4px 4px" }}>
+      <div className="totals-row" style={{ color: "var(--ink-dim)" }}><span className="lbl"><span className="swatch cash" />Cash</span><span>{fmt(byDay[expandedDay].cash)}</span></div>
+      <div className="totals-row" style={{ color: "var(--ink-dim)" }}><span className="lbl"><span className="swatch card" />Card</span><span>{fmt(byDay[expandedDay].card)}</span></div>
+      <div className="totals-row grand" style={{ borderTopColor: "var(--line)", color: "var(--ink)" }}><span>Day total</span><span>{fmt(byDay[expandedDay].cash + byDay[expandedDay].card)}</span></div>
+    </div>
+  </div>
+)}
+
+
 
         <div className="list-card">
           <div className="section-label">Backup</div>
