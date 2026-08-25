@@ -3,9 +3,12 @@ import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useLang } from "@/lib/i18n";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 export default function LoginPage() {
   const router = useRouter();
+  const { t } = useLang();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -18,7 +21,7 @@ export default function LoginPage() {
     const res = await signIn("credentials", { email, password, redirect: false });
     setLoading(false);
     if (res?.error) {
-      setError("Wrong email or password.");
+      setError(t.wrongCredentials);
     } else {
       router.push("/");
       router.refresh();
@@ -28,24 +31,27 @@ export default function LoginPage() {
   return (
     <div className="auth-shell">
       <div className="auth-card">
-        <div className="auth-title">Welcome back</div>
-        <div className="auth-sub">Log in to your Tržby account.</div>
+        <div className="auth-top">
+          <LanguageSwitcher />
+        </div>
+        <div className="auth-title">{t.welcomeBack}</div>
+        <div className="auth-sub">{t.loginSub}</div>
         <form onSubmit={handleSubmit}>
           <div className="field">
-            <label>Email</label>
+            <label>{t.email}</label>
             <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
           </div>
           <div className="field">
-            <label>Password</label>
+            <label>{t.password}</label>
             <input type="password" required value={password} onChange={(e) => setPassword(e.target.value)} />
           </div>
           {error && <div className="auth-error">{error}</div>}
           <button className="auth-btn" disabled={loading} type="submit">
-            {loading ? "Logging in…" : "Log in"}
+            {loading ? t.loggingIn : t.logIn}
           </button>
         </form>
         <div className="auth-switch">
-          No account yet? <Link href="/register">Create one</Link>
+          {t.noAccountYet}<Link href="/register">{t.createOne}</Link>
         </div>
       </div>
     </div>

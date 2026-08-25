@@ -3,9 +3,12 @@ import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useLang } from "@/lib/i18n";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 export default function RegisterPage() {
   const router = useRouter();
+  const { t } = useLang();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -23,14 +26,14 @@ export default function RegisterPage() {
     });
     const data = await res.json();
     if (!res.ok) {
-      setError(data.error || "Something went wrong.");
+      setError(data.error || t.somethingWrong);
       setLoading(false);
       return;
     }
     const signInRes = await signIn("credentials", { email, password, redirect: false });
     setLoading(false);
     if (signInRes?.error) {
-      setError("Account created — please log in.");
+      setError(t.accountCreatedPleaseLogin);
       router.push("/login");
     } else {
       router.push("/");
@@ -41,28 +44,31 @@ export default function RegisterPage() {
   return (
     <div className="auth-shell">
       <div className="auth-card">
-        <div className="auth-title">Create your account</div>
-        <div className="auth-sub">Start tracking your own cash and card income.</div>
+        <div className="auth-top">
+          <LanguageSwitcher />
+        </div>
+        <div className="auth-title">{t.createAccountTitle}</div>
+        <div className="auth-sub">{t.registerSub}</div>
         <form onSubmit={handleSubmit}>
           <div className="field">
-            <label>Name</label>
+            <label>{t.name}</label>
             <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
           </div>
           <div className="field">
-            <label>Email</label>
+            <label>{t.email}</label>
             <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
           </div>
           <div className="field">
-            <label>Password</label>
+            <label>{t.password}</label>
             <input type="password" required minLength={6} value={password} onChange={(e) => setPassword(e.target.value)} />
           </div>
           {error && <div className="auth-error">{error}</div>}
           <button className="auth-btn" disabled={loading} type="submit">
-            {loading ? "Creating…" : "Create account"}
+            {loading ? t.creating : t.createAccountBtn}
           </button>
         </form>
         <div className="auth-switch">
-          Already have an account? <Link href="/login">Log in</Link>
+          {t.alreadyHaveAccount}<Link href="/login">{t.logIn}</Link>
         </div>
       </div>
     </div>

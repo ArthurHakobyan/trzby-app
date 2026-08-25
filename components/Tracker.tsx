@@ -1,6 +1,8 @@
 "use client";
 import { useEffect, useMemo, useState, useCallback } from "react";
 import { signOut } from "next-auth/react";
+import { useLang } from "@/lib/i18n";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 type Entry = {
   id: string;
@@ -10,18 +12,15 @@ type Entry = {
   createdAt: string;
 };
 
-const weekday = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-const monthNames = [
-  "January","February","March","April","May","June",
-  "July","August","September","October","November","December",
-];
-
 const pad2 = (n: number) => String(n).padStart(2, "0");
 const dateKey = (d: Date) => `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
 const monthKey = (y: number, m: number) => `${y}-${pad2(m + 1)}`;
 const fmt = (n: number) => n.toLocaleString("cs-CZ") + " Kč";
 
 export default function Tracker({ userName }: { userName: string }) {
+  const { t } = useLang();
+  const weekday = t.weekday;
+  const monthNames = t.monthNames;
   const [tab, setTab] = useState<"today" | "history">("today");
   const [amount, setAmount] = useState("");
   const [todayEntries, setTodayEntries] = useState<Entry[]>([]);
@@ -100,8 +99,8 @@ export default function Tracker({ userName }: { userName: string }) {
       .slice()
       .sort((a, b) => a.createdAt.localeCompare(b.createdAt))
       .forEach((e) => {
-        const t = new Date(e.createdAt);
-        rows.push([e.date, `${pad2(t.getHours())}:${pad2(t.getMinutes())}`, e.type, String(e.amount)]);
+        const dt = new Date(e.createdAt);
+        rows.push([e.date, `${pad2(dt.getHours())}:${pad2(dt.getMinutes())}`, e.type, String(e.amount)]);
       });
     const csv = rows.map((r) => r.join(",")).join("\n");
     const blob = new Blob([csv], { type: "text/csv" });
@@ -127,17 +126,20 @@ export default function Tracker({ userName }: { userName: string }) {
             {userName ? ` · ${userName}` : ""}
           </div>
         </div>
-        <button className="signout" onClick={() => signOut({ callbackUrl: "/login" })}>
-          Log out
-        </button>
+        <div className="topbar-actions">
+          <LanguageSwitcher />
+          <button className="signout" onClick={() => signOut({ callbackUrl: "/login" })}>
+            {t.logOut}
+          </button>
+        </div>
       </div>
 
       <div className="tabs">
         <button className={`tab ${tab === "today" ? "active" : ""}`} onClick={() => setTab("today")}>
-          Today
+          {t.today}
         </button>
         <button className={`tab ${tab === "history" ? "active" : ""}`} onClick={() => setTab("history")}>
-          History
+          {t.history}
         </button>
       </div>
 
@@ -156,10 +158,10 @@ export default function Tracker({ userName }: { userName: string }) {
           </div>
           <div className="commit-row">
             <button className="commit-btn cash" disabled={!amount || loading} onClick={() => commit("cash")}>
-              Cash<small>hotovost</small>
+              {t.cash}<small>{t.cashHint}</small>
             </button>
             <button className="commit-btn card" disabled={!amount || loading} onClick={() => commit("card")}>
-              Card<small>karta</small>
+              {t.card}<small>{t.cardHint}</small>
             </button>
           </div>
         </div>
@@ -167,22 +169,22 @@ export default function Tracker({ userName }: { userName: string }) {
         <div className="receipt">
           <div className="receipt-inner">
             <div className="receipt-title">
-              <span>Today&apos;s entries</span>
+              <span>{t.todaysEntries}</span>
               <span>{todayEntries.length}</span>
             </div>
             {todayEntries.length === 0 ? (
-              <div className="empty-note">No entries yet — add your first haircut above.</div>
+              <div className="empty-note">{t.noEntriesYet}</div>
             ) : (
               todayEntries
                 .slice()
                 .sort((a, b) => a.createdAt.localeCompare(b.createdAt))
                 .map((e) => {
-                  const t = new Date(e.createdAt);
+                  const dt = new Date(e.createdAt);
                   return (
                     <div className="entry-row" key={e.id}>
                       <div className="entry-left">
                         <span className={`tag ${e.type}`}>{e.type}</span>
-                        <span className="entry-time">{pad2(t.getHours())}:{pad2(t.getMinutes())}</span>
+                        <span className="entry-time">{pad2(dt.getHours())}:{pad2(dt.getMinutes())}</span>
                       </div>
                       <div style={{ display: "flex", alignItems: "center" }}>
                         <span className="entry-amt">{fmt(e.amount)}</span>
@@ -195,9 +197,9 @@ export default function Tracker({ userName }: { userName: string }) {
           </div>
           <div className="zigzag" />
           <div className="totals">
-            <div className="totals-row"><span className="lbl"><span className="swatch cash" />Cash</span><span>{fmt(cashToday)}</span></div>
-            <div className="totals-row"><span className="lbl"><span className="swatch card" />Card</span><span>{fmt(cardToday)}</span></div>
-            <div className="totals-row grand"><span>Total</span><span>{fmt(cashToday + cardToday)}</span></div>
+            <div className="totals-row"><span className="lbl"><span className="swatch cash" />{t.cash}</span><span>{fmt(cashToday)}</span></div>
+            <div className="totals-row"><span className="lbl"><span className="swatch card" />{t.card}</span><span>{fmt(cardToday)}</span></div>
+            <div className="totals-row grand"><span>{t.total}</span><span>{fmt(cashToday + cardToday)}</span></div>
           </div>
         </div>
       </div>
@@ -223,19 +225,19 @@ export default function Tracker({ userName }: { userName: string }) {
 
         <div className="receipt">
           <div className="receipt-inner">
-            <div className="receipt-title"><span>Month total</span><span>{monthEntries.length} cuts</span></div>
+            <div className="receipt-title"><span>{t.monthTotal}</span><span>{t.cuts(monthEntries.length)}</span></div>
           </div>
           <div className="totals" style={{ paddingTop: 0 }}>
-            <div className="totals-row"><span className="lbl"><span className="swatch cash" />Cash</span><span>{fmt(cashMonth)}</span></div>
-            <div className="totals-row"><span className="lbl"><span className="swatch card" />Card</span><span>{fmt(cardMonth)}</span></div>
-            <div className="totals-row grand"><span>Total</span><span>{fmt(cashMonth + cardMonth)}</span></div>
+            <div className="totals-row"><span className="lbl"><span className="swatch cash" />{t.cash}</span><span>{fmt(cashMonth)}</span></div>
+            <div className="totals-row"><span className="lbl"><span className="swatch card" />{t.card}</span><span>{fmt(cardMonth)}</span></div>
+            <div className="totals-row grand"><span>{t.total}</span><span>{fmt(cashMonth + cardMonth)}</span></div>
           </div>
         </div>
 
         <div className="list-card">
-          <div className="section-label">Days</div>
+          <div className="section-label">{t.days}</div>
           {days.length === 0 ? (
-            <div className="no-data">No income logged this month.</div>
+            <div className="no-data">{t.noData}</div>
           ) : (
             days.map((d) => {
               const rec = byDay[d];
@@ -270,12 +272,12 @@ export default function Tracker({ userName }: { userName: string }) {
         .slice()
         .sort((a, b) => a.createdAt.localeCompare(b.createdAt))
         .map((e) => {
-          const t = new Date(e.createdAt);
+          const dt = new Date(e.createdAt);
           return (
             <div className="entry-row" key={e.id}>
               <div className="entry-left">
                 <span className={`tag ${e.type}`}>{e.type}</span>
-                <span className="entry-time">{pad2(t.getHours())}:{pad2(t.getMinutes())}</span>
+                <span className="entry-time">{pad2(dt.getHours())}:{pad2(dt.getMinutes())}</span>
               </div>
               <span className="entry-amt">{fmt(e.amount)}</span>
             </div>
@@ -283,9 +285,9 @@ export default function Tracker({ userName }: { userName: string }) {
         })}
     </div>
     <div className="totals" style={{ background: "transparent", padding: "10px 4px 4px" }}>
-      <div className="totals-row" style={{ color: "var(--ink-dim)" }}><span className="lbl"><span className="swatch cash" />Cash</span><span>{fmt(byDay[expandedDay].cash)}</span></div>
-      <div className="totals-row" style={{ color: "var(--ink-dim)" }}><span className="lbl"><span className="swatch card" />Card</span><span>{fmt(byDay[expandedDay].card)}</span></div>
-      <div className="totals-row grand" style={{ borderTopColor: "var(--line)", color: "var(--ink)" }}><span>Day total</span><span>{fmt(byDay[expandedDay].cash + byDay[expandedDay].card)}</span></div>
+      <div className="totals-row" style={{ color: "var(--ink-dim)" }}><span className="lbl"><span className="swatch cash" />{t.cash}</span><span>{fmt(byDay[expandedDay].cash)}</span></div>
+      <div className="totals-row" style={{ color: "var(--ink-dim)" }}><span className="lbl"><span className="swatch card" />{t.card}</span><span>{fmt(byDay[expandedDay].card)}</span></div>
+      <div className="totals-row grand" style={{ borderTopColor: "var(--line)", color: "var(--ink)" }}><span>{t.dayTotal}</span><span>{fmt(byDay[expandedDay].cash + byDay[expandedDay].card)}</span></div>
     </div>
   </div>
 )}
@@ -293,12 +295,12 @@ export default function Tracker({ userName }: { userName: string }) {
 
 
         <div className="list-card">
-          <div className="section-label">Backup</div>
+          <div className="section-label">{t.backup}</div>
           <div className="backup-row">
-            <button className="backup-btn" onClick={exportCSV}>⤓ CSV (this month)</button>
+            <button className="backup-btn" onClick={exportCSV}>{t.csvExport}</button>
           </div>
           <div className="backup-note">
-            Your data lives in the database, tied to your account — no manual backup needed to avoid losing it. Export CSV anytime for your own records.
+            {t.backupNote}
           </div>
         </div>
       </div>
