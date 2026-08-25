@@ -169,7 +169,7 @@ const dict: Record<Lang, Translations> = {
     alreadyHaveAccount: "Už máte účet? ",
     feedback: "Zpětná vazba",
     feedbackTitle: "Máte nápad na vylepšení?",
-    feedbackSub: "Napište mi, co chybí, co je matoucí, nebo co byste chtěli příště.",
+    feedbackSub: "Napište nám, co chybí, co je matoucí, nebo co byste chtěli příště.",
     feedbackPlaceholder: "Napište svou zpětnou vazbu…",
     feedbackSend: "Odeslat",
     feedbackSending: "Odesílání…",
