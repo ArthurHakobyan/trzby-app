@@ -4,6 +4,7 @@ import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useLang } from "@/lib/i18n";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import FeedbackModal from "@/components/FeedbackModal";
 
 type Entry = {
   id: string;
@@ -130,6 +131,7 @@ export default function Tracker({ userName }: { userName: string }) {
         </div>
         <div className="topbar-actions">
           <LanguageSwitcher />
+          <FeedbackModal />
           <button
             className="signout"
             onClick={async () => {

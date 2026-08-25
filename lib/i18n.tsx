@@ -47,6 +47,15 @@ type Translations = {
   somethingWrong: string;
   accountCreatedPleaseLogin: string;
   alreadyHaveAccount: string;
+  feedback: string;
+  feedbackTitle: string;
+  feedbackSub: string;
+  feedbackPlaceholder: string;
+  feedbackSend: string;
+  feedbackSending: string;
+  feedbackSuccess: string;
+  feedbackError: string;
+  close: string;
 };
 
 const dict: Record<Lang, Translations> = {
@@ -99,6 +108,15 @@ const dict: Record<Lang, Translations> = {
     somethingWrong: "Something went wrong.",
     accountCreatedPleaseLogin: "Account created — please log in.",
     alreadyHaveAccount: "Already have an account? ",
+    feedback: "Feedback",
+    feedbackTitle: "Got a suggestion?",
+    feedbackSub: "Tell me what's missing, confusing, or what you'd love to see next.",
+    feedbackPlaceholder: "Type your feedback here…",
+    feedbackSend: "Send feedback",
+    feedbackSending: "Sending…",
+    feedbackSuccess: "Thanks! Your feedback was sent.",
+    feedbackError: "Couldn't send that — try again.",
+    close: "Close",
   },
   cs: {
     weekday: ["Ne", "Po", "Út", "St", "Čt", "Pá", "So"],
@@ -149,6 +167,15 @@ const dict: Record<Lang, Translations> = {
     somethingWrong: "Něco se pokazilo.",
     accountCreatedPleaseLogin: "Účet vytvořen — přihlaste se prosím.",
     alreadyHaveAccount: "Už máte účet? ",
+    feedback: "Zpětná vazba",
+    feedbackTitle: "Máte nápad na vylepšení?",
+    feedbackSub: "Napište mi, co chybí, co je matoucí, nebo co byste chtěli příště.",
+    feedbackPlaceholder: "Napište svou zpětnou vazbu…",
+    feedbackSend: "Odeslat",
+    feedbackSending: "Odesílání…",
+    feedbackSuccess: "Díky! Vaše zpětná vazba byla odeslána.",
+    feedbackError: "Nepodařilo se odeslat — zkuste to znovu.",
+    close: "Zavřít",
   },
 };
 
