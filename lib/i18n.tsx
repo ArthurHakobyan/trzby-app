@@ -158,7 +158,7 @@ type LangContextValue = {
 const LangContext = createContext<LangContextValue | null>(null);
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [lang, setLangState] = useState<Lang>("en");
+  const [lang, setLangState] = useState<Lang>("cs");
 
   useEffect(() => {
     const stored = window.localStorage.getItem(STORAGE_KEY);
