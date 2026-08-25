@@ -2,10 +2,25 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Providers from "./providers";
 
+const title = "Tržby — evidence tržeb";
+const description = "Sledujte hotovost i platby kartou. Jednoduchá evidence příjmů zdarma.";
+
 export const metadata: Metadata = {
-  title: "Tržby — Income Ledger",
-  description: "Track daily cash and card income.",
+  metadataBase: new URL("https://www.barbertrzby.cz"),
+  title,
+  description,
   manifest: "/manifest.json",
+  openGraph: {
+    title,
+    description,
+    locale: "cs_CZ",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
+  },
 };
 
 export const viewport = {
