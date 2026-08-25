@@ -45,6 +45,7 @@ export default function LoginPage() {
           <div className="landing-art">
             <HeroIllustration />
           </div>
+          <div className="free-badge">{t.freeBadge}</div>
           <div className="landing-headline">{t.landingHeadline}</div>
           <div className="landing-sub">{t.landingSub}</div>
           <div className="feature-list">

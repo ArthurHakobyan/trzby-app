@@ -137,6 +137,7 @@ body{display:flex; justify-content:center;}
 
 .landing-info{display:flex; flex-direction:column; gap:20px;}
 .landing-art{width:180px; max-width:60%; align-self:center; margin:0 auto;}
+.free-badge{align-self:center; display:inline-flex; align-items:center; gap:6px; font-size:11.5px; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; color:var(--gold); border:1px solid var(--gold-dim); background:rgba(205,162,63,0.08); border-radius:999px; padding:6px 14px; margin:-4px 0 -8px;}
 .landing-headline{font-family:'Fraunces',serif; font-weight:700; font-size:28px; line-height:1.2; color:var(--ink); text-align:center;}
 .landing-sub{font-size:14px; color:var(--muted); line-height:1.6; text-align:center; max-width:440px; margin:0 auto;}
 
@@ -151,6 +152,7 @@ body{display:flex; justify-content:center;}
 @media (min-width:800px){
   .landing-grid{grid-template-columns:1.15fr 0.85fr; gap:56px; align-items:center;}
   .landing-art{margin:0;}
+  .free-badge{align-self:flex-start;}
   .landing-headline, .landing-sub{text-align:left; margin:0;}
   .feature-list{margin:4px 0 0;}
   .landing-auth{margin:0;}

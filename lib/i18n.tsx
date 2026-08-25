@@ -8,6 +8,7 @@ const STORAGE_KEY = "trzby-lang";
 type Translations = {
   weekday: string[];
   monthNames: string[];
+  freeBadge: string;
   landingHeadline: string;
   landingSub: string;
   features: { title: string; desc: string }[];
@@ -55,6 +56,7 @@ const dict: Record<Lang, Translations> = {
       "January", "February", "March", "April", "May", "June",
       "July", "August", "September", "October", "November", "December",
     ],
+    freeBadge: "100% free, no catch",
     landingHeadline: "Know your daily take, at a glance.",
     landingSub: "Tržby is a dead-simple income ledger for cash-and-card businesses — log every payment in two taps, and see exactly how your day, week, and month add up.",
     features: [
@@ -104,6 +106,7 @@ const dict: Record<Lang, Translations> = {
       "Leden", "Únor", "Březen", "Duben", "Květen", "Červen",
       "Červenec", "Srpen", "Září", "Říjen", "Listopad", "Prosinec",
     ],
+    freeBadge: "100% zdarma, bez háčku",
     landingHeadline: "Vaše tržby na první pohled.",
     landingSub: "Tržby je jednoduchá evidence příjmů pro živnostníky, kteří přijímají hotovost i kartu — každou platbu zapíšete na dva klepnutí a hned vidíte, jak si stojí váš den, týden i měsíc.",
     features: [
