@@ -110,7 +110,7 @@ const dict: Record<Lang, Translations> = {
     alreadyHaveAccount: "Already have an account? ",
     feedback: "Feedback",
     feedbackTitle: "Got a suggestion?",
-    feedbackSub: "Tell me what's missing, confusing, or what you'd love to see next.",
+    feedbackSub: "Tell us what's missing, confusing, or what you'd love to see next.",
     feedbackPlaceholder: "Type your feedback here…",
     feedbackSend: "Send feedback",
     feedbackSending: "Sending…",
