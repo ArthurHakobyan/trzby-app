@@ -8,6 +8,9 @@ const STORAGE_KEY = "trzby-lang";
 type Translations = {
   weekday: string[];
   monthNames: string[];
+  landingHeadline: string;
+  landingSub: string;
+  features: { title: string; desc: string }[];
   logOut: string;
   today: string;
   history: string;
@@ -52,6 +55,13 @@ const dict: Record<Lang, Translations> = {
       "January", "February", "March", "April", "May", "June",
       "July", "August", "September", "October", "November", "December",
     ],
+    landingHeadline: "Know your daily take, at a glance.",
+    landingSub: "Tržby is a dead-simple income ledger for cash-and-card businesses — log every payment in two taps, and see exactly how your day, week, and month add up.",
+    features: [
+      { title: "Two-tap logging", desc: "Punch in the amount, tap Cash or Card — done. No forms, no menus." },
+      { title: "Day & month totals", desc: "See cash vs. card broken down by day, with running monthly totals." },
+      { title: "Your data, exportable", desc: "Everything's saved to your account. Export CSV anytime for your books." },
+    ],
     logOut: "Log out",
     today: "Today",
     history: "History",
@@ -93,6 +103,13 @@ const dict: Record<Lang, Translations> = {
     monthNames: [
       "Leden", "Únor", "Březen", "Duben", "Květen", "Červen",
       "Červenec", "Srpen", "Září", "Říjen", "Listopad", "Prosinec",
+    ],
+    landingHeadline: "Vaše tržby na první pohled.",
+    landingSub: "Tržby je jednoduchá evidence příjmů pro živnostníky, kteří přijímají hotovost i kartu — každou platbu zapíšete na dva klepnutí a hned vidíte, jak si stojí váš den, týden i měsíc.",
+    features: [
+      { title: "Zápis na dva klepnutí", desc: "Zadejte částku, klepněte na Hotovost nebo Kartu — hotovo. Žádné formuláře, žádná menu." },
+      { title: "Denní i měsíční součty", desc: "Přehled hotovosti a karty po dnech, s průběžným součtem za měsíc." },
+      { title: "Vaše data, exportovatelná", desc: "Vše se ukládá k vašemu účtu. CSV export si stáhnete kdykoli pro účetnictví." },
     ],
     logOut: "Odhlásit",
     today: "Dnes",

@@ -127,3 +127,31 @@ body{display:flex; justify-content:center;}
 .auth-error{color:var(--danger); font-size:13px; margin-top:10px;}
 .auth-switch{text-align:center; font-size:13px; color:var(--muted); margin-top:18px;}
 .auth-switch a{color:var(--gold); text-decoration:none;}
+
+/* --- Landing / login split layout --- */
+.landing-shell{width:100%; max-width:960px; margin:0 auto; min-height:100vh; display:flex; flex-direction:column; padding:24px;}
+.landing-topbar{display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;}
+.landing-brand{font-family:'Fraunces',serif; font-weight:700; font-size:22px; letter-spacing:0.01em; color:var(--ink);}
+.landing-brand .dot{color:var(--gold);}
+.landing-grid{display:grid; grid-template-columns:1fr; gap:36px; flex:1; align-items:center; padding:20px 0;}
+
+.landing-info{display:flex; flex-direction:column; gap:20px;}
+.landing-art{width:180px; max-width:60%; align-self:center; margin:0 auto;}
+.landing-headline{font-family:'Fraunces',serif; font-weight:700; font-size:28px; line-height:1.2; color:var(--ink); text-align:center;}
+.landing-sub{font-size:14px; color:var(--muted); line-height:1.6; text-align:center; max-width:440px; margin:0 auto;}
+
+.feature-list{display:flex; flex-direction:column; gap:14px; max-width:420px; margin:4px auto 0; width:100%;}
+.feature-row{display:flex; gap:12px; align-items:flex-start;}
+.feature-icon{flex:none; width:36px; height:36px; border-radius:10px; background:var(--surface); border:1px solid var(--line); display:flex; align-items:center; justify-content:center;}
+.feature-title{font-size:13.5px; font-weight:600; color:var(--ink);}
+.feature-desc{font-size:12.5px; color:var(--muted); line-height:1.5; margin-top:2px;}
+
+.landing-auth{width:100%; max-width:400px; margin:0 auto;}
+
+@media (min-width:800px){
+  .landing-grid{grid-template-columns:1.15fr 0.85fr; gap:56px; align-items:center;}
+  .landing-art{margin:0;}
+  .landing-headline, .landing-sub{text-align:left; margin:0;}
+  .feature-list{margin:4px 0 0;}
+  .landing-auth{margin:0;}
+}
