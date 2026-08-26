@@ -27,7 +27,7 @@ type Translations = {
   noEntriesYet: string;
   total: string;
   monthTotal: string;
-  cuts: (n: number) => string;
+  entriesCount: (n: number) => string;
   days: string;
   noData: string;
   dayTotal: string;
@@ -92,7 +92,7 @@ const dict: Record<Lang, Translations> = {
     noEntriesYet: "No entries yet — add your first haircut above.",
     total: "Total",
     monthTotal: "Month total",
-    cuts: (n: number) => `${n} cuts`,
+    entriesCount: (n: number) => `${n} entr${n === 1 ? "y" : "ies"}`,
     days: "Days",
     noData: "No income logged this month.",
     dayTotal: "Day total",
@@ -155,7 +155,7 @@ const dict: Record<Lang, Translations> = {
     noEntriesYet: "Zatím žádné záznamy — přidejte první stříhání výše.",
     total: "Celkem",
     monthTotal: "Součet za měsíc",
-    cuts: (n: number) => `${n} stříhání`,
+    entriesCount: (n: number) => `${n} záznamů`,
     days: "Dny",
     noData: "Tento měsíc nejsou žádné záznamy.",
     dayTotal: "Denní součet",

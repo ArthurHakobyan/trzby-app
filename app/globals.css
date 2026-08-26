@@ -100,7 +100,8 @@ body{display:flex; justify-content:center;}
 
 .day-row{display:flex; justify-content:space-between; align-items:center; padding:12px 4px; border-bottom:1px solid var(--line); cursor:pointer;}
 .day-row:last-child{border-bottom:none;}
-.day-date{font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--ink-dim); width:74px;}
+.day-date{font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--ink-dim); width:74px; display:flex; flex-direction:column; gap:1px;}
+.day-entries-note{font-size:10px; font-weight:500; color:var(--muted); font-family:'Inter',sans-serif;}
 .day-bars{flex:1; display:flex; height:7px; border-radius:4px; overflow:hidden; background:var(--surface-raised); margin:0 10px;}
 .bar-cash{background:var(--cash);}
 .bar-card{background:var(--card);}

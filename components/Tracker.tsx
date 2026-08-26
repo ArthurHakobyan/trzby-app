@@ -89,11 +89,15 @@ export default function Tracker({ userName }: { userName: string }) {
   const tipsMonth = monthEntries.filter((e) => e.isTip).reduce((s, e) => s + e.amount, 0);
 
   const byDay = useMemo(() => {
-    const map: Record<string, { cash: number; card: number; tip: number; list: Entry[] }> = {};
+    const map: Record<string, { cash: number; card: number; tip: number; count: number; list: Entry[] }> = {};
     monthEntries.forEach((e) => {
-      if (!map[e.date]) map[e.date] = { cash: 0, card: 0, tip: 0, list: [] };
-      if (e.isTip) map[e.date].tip += e.amount;
-      else map[e.date][e.type] += e.amount;
+      if (!map[e.date]) map[e.date] = { cash: 0, card: 0, tip: 0, count: 0, list: [] };
+      if (e.isTip) {
+        map[e.date].tip += e.amount;
+      } else {
+        map[e.date][e.type] += e.amount;
+        map[e.date].count += 1;
+      }
       map[e.date].list.push(e);
     });
     return map;
@@ -201,7 +205,7 @@ export default function Tracker({ userName }: { userName: string }) {
           <div className="receipt-inner">
             <div className="receipt-title">
               <span>{t.todaysEntries}</span>
-              <span>{todayEntries.length}</span>
+              <span>{todayEntries.filter((e) => !e.isTip).length}</span>
             </div>
             {todayEntries.length === 0 ? (
               <div className="empty-note">{t.noEntriesYet}</div>
@@ -259,7 +263,7 @@ export default function Tracker({ userName }: { userName: string }) {
 
         <div className="receipt">
           <div className="receipt-inner">
-            <div className="receipt-title"><span>{t.monthTotal}</span><span>{t.cuts(monthEntries.length)}</span></div>
+            <div className="receipt-title"><span>{t.monthTotal}</span><span>{t.entriesCount(monthEntries.filter((e) => !e.isTip).length)}</span></div>
           </div>
           <div className="totals" style={{ paddingTop: 0 }}>
             <div className="totals-row"><span className="lbl"><span className="swatch cash" />{t.cash}</span><span>{fmt(cashMonth)}</span></div>
@@ -281,7 +285,10 @@ export default function Tracker({ userName }: { userName: string }) {
               const dt = new Date(d + "T00:00:00");
               return (
                 <div className="day-row" key={d} onClick={() => setExpandedDay(expandedDay === d ? null : d)}>
-                  <div className="day-date">{weekday[dt.getDay()]} {pad2(dt.getDate())}</div>
+                  <div className="day-date">
+                    <span>{weekday[dt.getDay()]} {pad2(dt.getDate())}</span>
+                    <span className="day-entries-note">{t.entriesCount(rec.count)}</span>
+                  </div>
                   <div className="day-bars">
                     <div className="bar-cash" style={{ width: `${(rec.cash / maxTotal) * 100}%` }} />
                     <div className="bar-card" style={{ width: `${(rec.card / maxTotal) * 100}%` }} />
