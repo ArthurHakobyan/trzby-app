@@ -60,6 +60,21 @@ type Translations = {
   feedbackSuccess: string;
   feedbackError: string;
   close: string;
+  menu: string;
+  help: string;
+  helpPage: {
+    title: string;
+    subtitle: string;
+    backToApp: string;
+    sections: { title: string; body: string }[];
+    aiTitle: string;
+    aiIntro: string;
+    aiSteps: string[];
+    aiPromptLabel: string;
+    aiPrompt: string;
+    aiCopy: string;
+    aiCopied: string;
+  };
 };
 
 const dict: Record<Lang, Translations> = {
@@ -125,6 +140,43 @@ const dict: Record<Lang, Translations> = {
     feedbackSuccess: "Thanks! Your feedback was sent.",
     feedbackError: "Couldn't send that — try again.",
     close: "Close",
+    menu: "Menu",
+    help: "Help",
+    helpPage: {
+      title: "How Tržby works",
+      subtitle: "A quick guide to logging income, reading your history, and getting more out of your data.",
+      backToApp: "Back to app",
+      sections: [
+        {
+          title: "Logging a payment",
+          body: "Punch in the amount on the keypad, then tap Cash or Card. That's it — the entry is saved instantly under today's date.",
+        },
+        {
+          title: "Services vs. Tips",
+          body: "Before you tap Cash or Card, choose Services or Tip at the top of the keypad. Services are payments for your work; tips are extra money on top. Tips are tracked separately and never count toward your entries total, so your numbers stay accurate.",
+        },
+        {
+          title: "Today and History",
+          body: "The Today tab shows everything logged so far today, split into Cash, Card, Services total, Tips, and a grand Total. The History tab shows the same breakdown for any month, plus a day-by-day list — tap a day to see its individual entries.",
+        },
+        {
+          title: "Exporting your data",
+          body: "In History, tap \"CSV (this month)\" to download every entry for that month as a spreadsheet file — date, time, whether it was a service or a tip, payment type, and amount. Open it in Excel, Google Sheets, or hand it to your accountant.",
+        },
+      ],
+      aiTitle: "Analyze your CSV with AI",
+      aiIntro: "Your monthly CSV export is plain, structured data — perfect for asking an AI assistant like Claude or ChatGPT to spot patterns you might not notice yourself: which days bring in the most, how tips trend over time, or where your cash vs. card habits shift.",
+      aiSteps: [
+        "Export the month you want to analyze from the History tab.",
+        "Open Claude, ChatGPT, or any AI chat tool.",
+        "Upload or paste the CSV file, along with the prompt below.",
+        "Ask follow-up questions — the AI can keep digging into the same data.",
+      ],
+      aiPromptLabel: "Copy-paste prompt",
+      aiPrompt: "Here is my income data exported from my income-tracking app as a CSV file. Each row is one payment: date, time, category (services or tip), payment type (cash or card), and amount in CZK. Please analyze this data and tell me: 1) my busiest and slowest days of the week, 2) how cash vs. card usage trends over the period, 3) how tip income compares to service income and whether it's growing, and 4) any patterns or suggestions that could help me increase my revenue going forward.",
+      aiCopy: "Copy prompt",
+      aiCopied: "Copied!",
+    },
   },
   cs: {
     weekday: ["Ne", "Po", "Út", "St", "Čt", "Pá", "So"],
@@ -188,6 +240,43 @@ const dict: Record<Lang, Translations> = {
     feedbackSuccess: "Díky! Vaše zpětná vazba byla odeslána.",
     feedbackError: "Nepodařilo se odeslat — zkuste to znovu.",
     close: "Zavřít",
+    menu: "Menu",
+    help: "Nápověda",
+    helpPage: {
+      title: "Jak Tržby fungují",
+      subtitle: "Stručný průvodce zápisem příjmů, čtením historie a tím, jak z dat vytěžit víc.",
+      backToApp: "Zpět do aplikace",
+      sections: [
+        {
+          title: "Zápis platby",
+          body: "Zadejte částku na klávesnici a klepněte na Hotovost nebo Kartu. Hotovo — záznam se uloží okamžitě pod dnešní datum.",
+        },
+        {
+          title: "Tržby vs. spropitné",
+          body: "Než klepnete na Hotovost nebo Kartu, vyberte nahoře Tržby nebo Spropitné. Tržby jsou platby za vaši práci, spropitné je částka navíc. Spropitné se sleduje odděleně a nikdy se nepočítá do počtu záznamů, takže vaše čísla zůstanou přesná.",
+        },
+        {
+          title: "Dnes a Historie",
+          body: "Záložka Dnes ukazuje vše zapsané dnes, rozdělené na Hotovost, Kartu, Tržby celkem, Spropitné a celkový Součet. Historie ukazuje totéž za libovolný měsíc, plus přehled po dnech — klepnutím na den zobrazíte jednotlivé záznamy.",
+        },
+        {
+          title: "Export dat",
+          body: "V Historii klepněte na „CSV (tento měsíc)“ a stáhnete všechny záznamy daného měsíce jako soubor tabulky — datum, čas, zda šlo o tržbu nebo spropitné, způsob platby a částku. Otevřete jej v Excelu, Google Sheets, nebo předejte účetní.",
+        },
+      ],
+      aiTitle: "Analyzujte své CSV pomocí AI",
+      aiIntro: "Měsíční export CSV jsou přehledná strukturovaná data — ideální pro AI asistenta jako Claude nebo ChatGPT, který v nich najde vzorce, kterých byste si sami nemuseli všimnout: které dny vydělávají nejvíc, jak se vyvíjí spropitné, nebo kde se mění poměr hotovosti a karty.",
+      aiSteps: [
+        "V záložce Historie exportujte měsíc, který chcete analyzovat.",
+        "Otevřete Claude, ChatGPT nebo jiný AI chat.",
+        "Nahrajte nebo vložte CSV soubor spolu s promptem níže.",
+        "Ptejte se dál — AI může ve stejných datech pokračovat v analýze.",
+      ],
+      aiPromptLabel: "Prompt ke zkopírování",
+      aiPrompt: "Toto jsou moje příjmová data exportovaná z aplikace na sledování tržeb jako CSV soubor. Každý řádek je jedna platba: datum, čas, kategorie (tržba nebo spropitné), způsob platby (hotovost nebo karta) a částka v Kč. Prosím analyzuj tato data a řekni mi: 1) které dny v týdnu jsou nejsilnější a které nejslabší, 2) jak se v čase vyvíjí poměr hotovosti a karty, 3) jak si stojí spropitné vůči tržbám a jestli roste, a 4) jaké vzorce nebo doporučení by mi mohly pomoct do budoucna zvýšit příjmy.",
+      aiCopy: "Kopírovat prompt",
+      aiCopied: "Zkopírováno!",
+    },
   },
 };
 

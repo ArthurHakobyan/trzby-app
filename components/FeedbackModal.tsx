@@ -2,14 +2,13 @@
 import { useState } from "react";
 import { useLang } from "@/lib/i18n";
 
-export default function FeedbackModal() {
+export default function FeedbackModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { t } = useLang();
-  const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
 
   function close() {
-    setOpen(false);
+    onClose();
     setMessage("");
     setStatus("idle");
   }
@@ -27,10 +26,6 @@ export default function FeedbackModal() {
 
   return (
     <>
-      <button className="signout" onClick={() => setOpen(true)}>
-        {t.feedback}
-      </button>
-
       {open && (
         <div className="modal-overlay" onClick={close}>
           <div className="modal-card" onClick={(e) => e.stopPropagation()}>
