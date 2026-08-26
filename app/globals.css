@@ -50,7 +50,8 @@ body{display:flex; justify-content:center;}
 
 .type-toggle{display:flex; background:var(--surface-raised); border-radius:10px; padding:3px; gap:3px; margin-bottom:14px;}
 .type-opt{flex:1; text-align:center; padding:8px 0; font-size:11.5px; font-weight:700; letter-spacing:0.04em; text-transform:uppercase; border:none; background:none; color:var(--ink-dim); border-radius:8px; cursor:pointer; transition:background .15s,color .15s;}
-.type-opt.active{background:var(--gold); color:#20241a;}
+.type-opt.services.active{background:var(--cash-deep); color:#e8f2e9;}
+.type-opt.tip.active{background:var(--gold-dim); color:#fbf3df;}
 
 .commit-row{display:flex; gap:10px; margin-top:14px;}
 .commit-btn{flex:1; padding:14px 0; border:none; border-radius:12px; font-weight:700; font-size:14px; letter-spacing:0.03em; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:2px; transition:transform .1s;}

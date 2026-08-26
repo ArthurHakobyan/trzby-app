@@ -169,10 +169,10 @@ export default function Tracker({ userName }: { userName: string }) {
       <div className={`view ${tab === "today" ? "active" : ""}`}>
         <div className="pad-card">
           <div className="type-toggle">
-            <button className={`type-opt ${!isTip ? "active" : ""}`} onClick={() => setIsTip(false)}>
+            <button className={`type-opt services ${!isTip ? "active" : ""}`} onClick={() => setIsTip(false)}>
               {t.services}
             </button>
-            <button className={`type-opt ${isTip ? "active" : ""}`} onClick={() => setIsTip(true)}>
+            <button className={`type-opt tip ${isTip ? "active" : ""}`} onClick={() => setIsTip(true)}>
               {t.tip}
             </button>
           </div>
