@@ -26,6 +26,7 @@ model Entry {
   id        String    @id @default(cuid())
   amount    Int
   type      EntryType
+  isTip     Boolean   @default(false)
   date      String    // YYYY-MM-DD, local day the entry belongs to
   createdAt DateTime  @default(now())
   userId    String

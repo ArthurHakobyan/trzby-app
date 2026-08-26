@@ -31,7 +31,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { amount, type, date } = await req.json();
+  const { amount, type, date, isTip } = await req.json();
 
   if (!amount || amount <= 0 || !["cash", "card"].includes(type) || !date) {
     return NextResponse.json({ error: "Invalid entry." }, { status: 400 });
@@ -41,6 +41,7 @@ export async function POST(req: Request) {
     data: {
       amount: Math.round(amount),
       type,
+      isTip: Boolean(isTip),
       date,
       userId: session.user.id,
     },

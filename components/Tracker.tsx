@@ -10,6 +10,7 @@ type Entry = {
   id: string;
   amount: number;
   type: "cash" | "card";
+  isTip: boolean;
   date: string; // YYYY-MM-DD
   createdAt: string;
 };
@@ -26,6 +27,7 @@ export default function Tracker({ userName }: { userName: string }) {
   const router = useRouter();
   const [tab, setTab] = useState<"today" | "history">("today");
   const [amount, setAmount] = useState("");
+  const [isTip, setIsTip] = useState(false);
   const [todayEntries, setTodayEntries] = useState<Entry[]>([]);
   const [monthEntries, setMonthEntries] = useState<Entry[]>([]);
   const [selMonth, setSelMonth] = useState(new Date().getMonth());
@@ -57,11 +59,12 @@ export default function Tracker({ userName }: { userName: string }) {
     const res = await fetch("/api/entries", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ amount: amt, type, date: today }),
+      body: JSON.stringify({ amount: amt, type, date: today, isTip }),
     });
     setLoading(false);
     if (res.ok) {
       setAmount("");
+      setIsTip(false);
       loadMonth(selYear, selMonth);
     }
   }
@@ -77,17 +80,20 @@ export default function Tracker({ userName }: { userName: string }) {
     else setAmount((a) => (a.length < 6 ? a + k : a));
   }
 
-  const cashToday = todayEntries.filter((e) => e.type === "cash").reduce((s, e) => s + e.amount, 0);
-  const cardToday = todayEntries.filter((e) => e.type === "card").reduce((s, e) => s + e.amount, 0);
+  const cashToday = todayEntries.filter((e) => e.type === "cash" && !e.isTip).reduce((s, e) => s + e.amount, 0);
+  const cardToday = todayEntries.filter((e) => e.type === "card" && !e.isTip).reduce((s, e) => s + e.amount, 0);
+  const tipsToday = todayEntries.filter((e) => e.isTip).reduce((s, e) => s + e.amount, 0);
 
-  const cashMonth = monthEntries.filter((e) => e.type === "cash").reduce((s, e) => s + e.amount, 0);
-  const cardMonth = monthEntries.filter((e) => e.type === "card").reduce((s, e) => s + e.amount, 0);
+  const cashMonth = monthEntries.filter((e) => e.type === "cash" && !e.isTip).reduce((s, e) => s + e.amount, 0);
+  const cardMonth = monthEntries.filter((e) => e.type === "card" && !e.isTip).reduce((s, e) => s + e.amount, 0);
+  const tipsMonth = monthEntries.filter((e) => e.isTip).reduce((s, e) => s + e.amount, 0);
 
   const byDay = useMemo(() => {
-    const map: Record<string, { cash: number; card: number; list: Entry[] }> = {};
+    const map: Record<string, { cash: number; card: number; tip: number; list: Entry[] }> = {};
     monthEntries.forEach((e) => {
-      if (!map[e.date]) map[e.date] = { cash: 0, card: 0, list: [] };
-      map[e.date][e.type] += e.amount;
+      if (!map[e.date]) map[e.date] = { cash: 0, card: 0, tip: 0, list: [] };
+      if (e.isTip) map[e.date].tip += e.amount;
+      else map[e.date][e.type] += e.amount;
       map[e.date].list.push(e);
     });
     return map;
@@ -97,13 +103,19 @@ export default function Tracker({ userName }: { userName: string }) {
   const maxTotal = Math.max(1, ...days.map((d) => byDay[d].cash + byDay[d].card));
 
   function exportCSV() {
-    const rows = [["date", "time", "type", "amount_czk"]];
+    const rows = [["date", "time", "category", "type", "amount_czk"]];
     monthEntries
       .slice()
       .sort((a, b) => a.createdAt.localeCompare(b.createdAt))
       .forEach((e) => {
         const dt = new Date(e.createdAt);
-        rows.push([e.date, `${pad2(dt.getHours())}:${pad2(dt.getMinutes())}`, e.type, String(e.amount)]);
+        rows.push([
+          e.date,
+          `${pad2(dt.getHours())}:${pad2(dt.getMinutes())}`,
+          e.isTip ? "tip" : "services",
+          e.type,
+          String(e.amount),
+        ]);
       });
     const csv = rows.map((r) => r.join(",")).join("\n");
     const blob = new Blob([csv], { type: "text/csv" });
@@ -156,6 +168,14 @@ export default function Tracker({ userName }: { userName: string }) {
 
       <div className={`view ${tab === "today" ? "active" : ""}`}>
         <div className="pad-card">
+          <div className="type-toggle">
+            <button className={`type-opt ${!isTip ? "active" : ""}`} onClick={() => setIsTip(false)}>
+              {t.services}
+            </button>
+            <button className={`type-opt ${isTip ? "active" : ""}`} onClick={() => setIsTip(true)}>
+              {t.tip}
+            </button>
+          </div>
           <div className="amount-display">
             {amount === "" ? "0" : parseInt(amount, 10)}
             <span className="cur">Kč</span>
@@ -195,6 +215,7 @@ export default function Tracker({ userName }: { userName: string }) {
                     <div className="entry-row" key={e.id}>
                       <div className="entry-left">
                         <span className={`tag ${e.type}`}>{e.type}</span>
+                        {e.isTip && <span className="tag tip">{t.tip}</span>}
                         <span className="entry-time">{pad2(dt.getHours())}:{pad2(dt.getMinutes())}</span>
                       </div>
                       <div style={{ display: "flex", alignItems: "center" }}>
@@ -210,7 +231,9 @@ export default function Tracker({ userName }: { userName: string }) {
           <div className="totals">
             <div className="totals-row"><span className="lbl"><span className="swatch cash" />{t.cash}</span><span>{fmt(cashToday)}</span></div>
             <div className="totals-row"><span className="lbl"><span className="swatch card" />{t.card}</span><span>{fmt(cardToday)}</span></div>
-            <div className="totals-row grand"><span>{t.total}</span><span>{fmt(cashToday + cardToday)}</span></div>
+            <div className="totals-row subtotal"><span>{t.servicesTotal}</span><span>{fmt(cashToday + cardToday)}</span></div>
+            <div className="totals-row"><span className="lbl"><span className="swatch tip" />{t.tips}</span><span>{fmt(tipsToday)}</span></div>
+            <div className="totals-row grand"><span>{t.total}</span><span>{fmt(cashToday + cardToday + tipsToday)}</span></div>
           </div>
         </div>
       </div>
@@ -241,7 +264,9 @@ export default function Tracker({ userName }: { userName: string }) {
           <div className="totals" style={{ paddingTop: 0 }}>
             <div className="totals-row"><span className="lbl"><span className="swatch cash" />{t.cash}</span><span>{fmt(cashMonth)}</span></div>
             <div className="totals-row"><span className="lbl"><span className="swatch card" />{t.card}</span><span>{fmt(cardMonth)}</span></div>
-            <div className="totals-row grand"><span>{t.total}</span><span>{fmt(cashMonth + cardMonth)}</span></div>
+            <div className="totals-row subtotal"><span>{t.servicesTotal}</span><span>{fmt(cashMonth + cardMonth)}</span></div>
+            <div className="totals-row"><span className="lbl"><span className="swatch tip" />{t.tips}</span><span>{fmt(tipsMonth)}</span></div>
+            <div className="totals-row grand"><span>{t.total}</span><span>{fmt(cashMonth + cardMonth + tipsMonth)}</span></div>
           </div>
         </div>
 
@@ -261,7 +286,10 @@ export default function Tracker({ userName }: { userName: string }) {
                     <div className="bar-cash" style={{ width: `${(rec.cash / maxTotal) * 100}%` }} />
                     <div className="bar-card" style={{ width: `${(rec.card / maxTotal) * 100}%` }} />
                   </div>
-                  <div className="day-total">{fmt(total)}</div>
+                  <div className="day-total">
+                    <span>{fmt(total)}</span>
+                    {rec.tip > 0 && <span className="day-tip-note">+{fmt(rec.tip)} {t.tips.toLowerCase()}</span>}
+                  </div>
                 </div>
               );
             })
@@ -288,6 +316,7 @@ export default function Tracker({ userName }: { userName: string }) {
             <div className="entry-row" key={e.id}>
               <div className="entry-left">
                 <span className={`tag ${e.type}`}>{e.type}</span>
+                {e.isTip && <span className="tag tip">{t.tip}</span>}
                 <span className="entry-time">{pad2(dt.getHours())}:{pad2(dt.getMinutes())}</span>
               </div>
               <span className="entry-amt">{fmt(e.amount)}</span>
@@ -298,7 +327,9 @@ export default function Tracker({ userName }: { userName: string }) {
     <div className="totals" style={{ background: "transparent", padding: "10px 4px 4px" }}>
       <div className="totals-row" style={{ color: "var(--ink-dim)" }}><span className="lbl"><span className="swatch cash" />{t.cash}</span><span>{fmt(byDay[expandedDay].cash)}</span></div>
       <div className="totals-row" style={{ color: "var(--ink-dim)" }}><span className="lbl"><span className="swatch card" />{t.card}</span><span>{fmt(byDay[expandedDay].card)}</span></div>
-      <div className="totals-row grand" style={{ borderTopColor: "var(--line)", color: "var(--ink)" }}><span>{t.dayTotal}</span><span>{fmt(byDay[expandedDay].cash + byDay[expandedDay].card)}</span></div>
+      <div className="totals-row subtotal" style={{ borderTopColor: "var(--line)", color: "var(--ink-dim)" }}><span>{t.servicesTotal}</span><span>{fmt(byDay[expandedDay].cash + byDay[expandedDay].card)}</span></div>
+      <div className="totals-row" style={{ color: "var(--ink-dim)" }}><span className="lbl"><span className="swatch tip" />{t.tips}</span><span>{fmt(byDay[expandedDay].tip)}</span></div>
+      <div className="totals-row grand" style={{ borderTopColor: "var(--line)", color: "var(--ink)" }}><span>{t.dayTotal}</span><span>{fmt(byDay[expandedDay].cash + byDay[expandedDay].card + byDay[expandedDay].tip)}</span></div>
     </div>
   </div>
 )}

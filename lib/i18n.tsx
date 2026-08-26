@@ -19,6 +19,10 @@ type Translations = {
   cashHint: string;
   card: string;
   cardHint: string;
+  services: string;
+  tip: string;
+  tips: string;
+  servicesTotal: string;
   todaysEntries: string;
   noEntriesYet: string;
   total: string;
@@ -80,6 +84,10 @@ const dict: Record<Lang, Translations> = {
     cashHint: "hotovost",
     card: "Card",
     cardHint: "karta",
+    services: "Services",
+    tip: "Tip",
+    tips: "Tips",
+    servicesTotal: "Services total",
     todaysEntries: "Today's entries",
     noEntriesYet: "No entries yet — add your first haircut above.",
     total: "Total",
@@ -139,6 +147,10 @@ const dict: Record<Lang, Translations> = {
     cashHint: "cash",
     card: "Karta",
     cardHint: "card",
+    services: "Tržby",
+    tip: "Spropitné",
+    tips: "Spropitné",
+    servicesTotal: "Tržby celkem",
     todaysEntries: "Dnešní záznamy",
     noEntriesYet: "Zatím žádné záznamy — přidejte první stříhání výše.",
     total: "Celkem",

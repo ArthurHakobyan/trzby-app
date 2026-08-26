@@ -48,6 +48,10 @@ body{display:flex; justify-content:center;}
 .key:active{background:var(--gold-dim); color:#20241a;}
 .key.func{color:var(--ink-dim); font-size:16px;}
 
+.type-toggle{display:flex; background:var(--surface-raised); border-radius:10px; padding:3px; gap:3px; margin-bottom:14px;}
+.type-opt{flex:1; text-align:center; padding:8px 0; font-size:11.5px; font-weight:700; letter-spacing:0.04em; text-transform:uppercase; border:none; background:none; color:var(--ink-dim); border-radius:8px; cursor:pointer; transition:background .15s,color .15s;}
+.type-opt.active{background:var(--gold); color:#20241a;}
+
 .commit-row{display:flex; gap:10px; margin-top:14px;}
 .commit-btn{flex:1; padding:14px 0; border:none; border-radius:12px; font-weight:700; font-size:14px; letter-spacing:0.03em; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:2px; transition:transform .1s;}
 .commit-btn:active{transform:scale(0.97);}
@@ -65,6 +69,7 @@ body{display:flex; justify-content:center;}
 .tag{font-size:9px; font-weight:600; letter-spacing:0.05em; padding:3px 6px; border-radius:4px; text-transform:uppercase;}
 .tag.cash{background:var(--cash-deep); color:#e8f2e9;}
 .tag.card{background:var(--card-deep); color:#e8f0f7;}
+.tag.tip{background:var(--gold-dim); color:#fbf3df;}
 .entry-time{color:#8a8267; font-size:11px;}
 .entry-amt{font-weight:600;}
 .entry-del{color:#b5493f; font-size:16px; padding:0 2px 0 10px; cursor:pointer; opacity:0.6; background:none; border:none;}
@@ -84,6 +89,8 @@ body{display:flex; justify-content:center;}
 .swatch{width:8px; height:8px; border-radius:2px;}
 .swatch.cash{background:var(--cash-deep);}
 .swatch.card{background:var(--card-deep);}
+.swatch.tip{background:var(--gold-dim);}
+.totals-row.subtotal{border-top:1px dotted #c9bfa0; margin-top:2px; padding-top:8px; font-weight:600; color:#3a3626;}
 
 .month-nav{display:flex; align-items:center; justify-content:space-between; padding:2px 4px;}
 .month-label{font-family:'Fraunces',serif; font-size:19px; font-weight:600;}
@@ -96,7 +103,8 @@ body{display:flex; justify-content:center;}
 .day-bars{flex:1; display:flex; height:7px; border-radius:4px; overflow:hidden; background:var(--surface-raised); margin:0 10px;}
 .bar-cash{background:var(--cash);}
 .bar-card{background:var(--card);}
-.day-total{font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:600; width:76px; text-align:right;}
+.day-total{font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:600; width:76px; text-align:right; display:flex; flex-direction:column; align-items:flex-end; gap:1px;}
+.day-tip-note{font-size:10px; font-weight:500; color:var(--gold-dim);}
 
 .list-card{background:var(--surface); border-radius:16px; padding:6px 14px; border:1px solid var(--line);}
 .section-label{font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); margin:2px 2px 8px; font-weight:600;}
