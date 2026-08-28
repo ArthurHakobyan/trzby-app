@@ -40,12 +40,6 @@ export default function NavMenu() {
 
       {open && (
         <div className="nav-dropdown">
-          <Link href="/help" className="nav-dropdown-item" onClick={() => setOpen(false)}>
-            {t.help}
-          </Link>
-          <Link href="/privacy" className="nav-dropdown-item" onClick={() => setOpen(false)}>
-            {t.privacyLink}
-          </Link>
           <button
             className="nav-dropdown-item"
             onClick={() => {
@@ -55,6 +49,9 @@ export default function NavMenu() {
           >
             {t.changeName}
           </button>
+          <Link href="/help" className="nav-dropdown-item" onClick={() => setOpen(false)}>
+            {t.help}
+          </Link>
           <button
             className="nav-dropdown-item"
             onClick={() => {
@@ -64,6 +61,9 @@ export default function NavMenu() {
           >
             {t.feedback}
           </button>
+          <Link href="/privacy" className="nav-dropdown-item" onClick={() => setOpen(false)}>
+            {t.privacyLink}
+          </Link>
           <button
             className="nav-dropdown-item danger-text"
             onClick={() => {
