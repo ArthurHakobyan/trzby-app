@@ -153,7 +153,7 @@ body{display:flex; justify-content:center;}
 .nav-dropdown-item.danger-text{color:var(--danger);}
 .auth-error{color:var(--danger); font-size:13px; margin-top:10px;}
 .info-banner{background:var(--surface-raised); border:1px solid var(--line); border-radius:10px; padding:10px 14px; font-size:13px; color:var(--ink); margin-bottom:14px;}
-.info-banner.success{background:var(--cash-deep); border-color:var(--cash); color:var(--ink); text-transform:uppercase; font-weight:700;}
+.info-banner.success{background:var(--cash-deep); border-color:var(--cash); color:var(--ink); font-weight:700;}
 .auth-switch{text-align:center; font-size:13px; color:var(--muted); margin-top:18px;}
 .auth-switch a{color:var(--gold); text-decoration:none;}
 
