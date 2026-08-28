@@ -70,6 +70,9 @@ export default function RegisterPage() {
         <div className="auth-switch">
           {t.alreadyHaveAccount}<Link href="/login">{t.logIn}</Link>
         </div>
+        <div className="auth-switch">
+          <Link href="/privacy">{t.privacyLink}</Link>
+        </div>
       </div>
     </div>
   );

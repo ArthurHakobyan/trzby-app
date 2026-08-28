@@ -41,6 +41,9 @@ export default function NavMenu() {
           <Link href="/help" className="nav-dropdown-item" onClick={() => setOpen(false)}>
             {t.help}
           </Link>
+          <Link href="/privacy" className="nav-dropdown-item" onClick={() => setOpen(false)}>
+            {t.privacyLink}
+          </Link>
           <button
             className="nav-dropdown-item"
             onClick={() => {

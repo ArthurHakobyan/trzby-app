@@ -100,6 +100,12 @@ type Translations = {
     aiCopy: string;
     aiCopied: string;
   };
+  privacyLink: string;
+  privacyPage: {
+    title: string;
+    updated: string;
+    sections: { title: string; body: string }[];
+  };
 };
 
 const dict: Record<Lang, Translations> = {
@@ -227,6 +233,50 @@ const dict: Record<Lang, Translations> = {
       aiCopy: "Copy prompt",
       aiCopied: "Copied!",
     },
+    privacyLink: "Privacy Policy",
+    // privacy@barbertrzby.cz doesn't receive mail yet — set up before relying on this contact.
+    privacyPage: {
+      title: "Privacy Policy",
+      updated: "Last updated: 28 August 2026",
+      sections: [
+        {
+          title: "Information we collect",
+          body: "Your account: name (optional), email, and password (stored as a one-way hash, never in plain text). Your entries: amount, payment type (cash or card), date, and whether it's a tip. Anything you send through the feedback form.",
+        },
+        {
+          title: "Why we collect it",
+          body: "To run your ledger, keep your account secure, and let you export or review your own income data. Feedback helps us improve the app — we don't use your data for advertising or sell it to anyone.",
+        },
+        {
+          title: "How long we keep it",
+          body: "As long as your account exists. Delete your account anytime from the menu (☰ → Delete account) and your account, all entries, and all feedback are permanently removed immediately — no waiting period.",
+        },
+        {
+          title: "Who we share it with",
+          body: "Vercel (hosting), Neon (our PostgreSQL database), and Resend (sending password-reset emails) — all as service providers acting on our behalf, never for their own marketing. We run no analytics or tracking on this app, and we don't sell or share your data with advertisers.",
+        },
+        {
+          title: "Cookies",
+          body: "Just one: a session cookie that keeps you logged in. No tracking or advertising cookies.",
+        },
+        {
+          title: "Your rights",
+          body: "Export your data anytime as CSV (History → CSV export). Delete your account and everything in it anytime from the menu — no need to ask us. For anything else, like correcting a detail or a question about this policy, contact us below.",
+        },
+        {
+          title: "Security",
+          body: "Passwords are hashed with bcrypt and never stored in plain text. All traffic to the app is encrypted (HTTPS).",
+        },
+        {
+          title: "Children",
+          body: "Tržby isn't directed at children, and we don't knowingly collect data from anyone under 16.",
+        },
+        {
+          title: "Contact",
+          body: "Questions about this policy or your data: privacy@barbertrzby.cz",
+        },
+      ],
+    },
   },
   cs: {
     weekday: ["Ne", "Po", "Út", "St", "Čt", "Pá", "So"],
@@ -351,6 +401,49 @@ const dict: Record<Lang, Translations> = {
       aiPrompt: "Toto jsou moje příjmová data exportovaná z aplikace na sledování tržeb jako CSV soubor. Každý řádek je jedna platba: datum, čas, kategorie (tržba nebo spropitné), způsob platby (hotovost nebo karta) a částka v Kč. Prosím analyzuj tato data a řekni mi: 1) které dny v týdnu jsou nejsilnější a které nejslabší, 2) jak se v čase vyvíjí poměr hotovosti a karty, 3) jak si stojí spropitné vůči tržbám a jestli roste, a 4) jaké vzorce nebo doporučení by mi mohly pomoct do budoucna zvýšit příjmy.",
       aiCopy: "Kopírovat prompt",
       aiCopied: "Zkopírováno!",
+    },
+    privacyLink: "Ochrana osobních údajů",
+    privacyPage: {
+      title: "Ochrana osobních údajů",
+      updated: "Naposledy aktualizováno: 28. srpna 2026",
+      sections: [
+        {
+          title: "Jaké údaje shromažďujeme",
+          body: "Váš účet: jméno (nepovinné), e-mail a heslo (uložené jako jednosměrný hash, nikdy v čitelné podobě). Vaše záznamy: částka, způsob platby (hotovost nebo karta), datum a zda jde o spropitné. Cokoliv, co pošlete přes formulář zpětné vazby.",
+        },
+        {
+          title: "Proč je shromažďujeme",
+          body: "Abychom vedli vaši evidenci, zabezpečili váš účet a umožnili vám prohlížet nebo exportovat vaše vlastní příjmová data. Zpětná vazba nám pomáhá aplikaci zlepšovat — vaše data nepoužíváme k reklamě ani je nikomu neprodáváme.",
+        },
+        {
+          title: "Jak dlouho je uchováváme",
+          body: "Dokud existuje váš účet. Účet můžete kdykoliv smazat v menu (☰ → Smazat účet) — účet, všechny záznamy i zpětná vazba se okamžitě a trvale odstraní, bez čekací doby.",
+        },
+        {
+          title: "S kým je sdílíme",
+          body: "Vercel (hosting), Neon (naše databáze PostgreSQL) a Resend (odesílání e-mailů pro obnovení hesla) — všichni jako poskytovatelé služeb jednající naším jménem, nikdy pro vlastní marketing. V aplikaci neprovozujeme žádnou analytiku ani sledování a vaše data neprodáváme ani nesdílíme s inzerenty.",
+        },
+        {
+          title: "Cookies",
+          body: "Pouze jedna: přihlašovací cookie, která vás udrží přihlášené. Žádné sledovací ani reklamní cookies.",
+        },
+        {
+          title: "Vaše práva",
+          body: "Svá data můžete kdykoliv exportovat jako CSV (Historie → CSV export). Účet a vše v něm můžete kdykoliv smazat v menu — nemusíte nás o nic žádat. Pro cokoliv dalšího, například opravu údaje nebo dotaz k těmto zásadám, nás kontaktujte níže.",
+        },
+        {
+          title: "Zabezpečení",
+          body: "Hesla jsou hashovaná pomocí bcrypt a nikdy nejsou uložena v čitelné podobě. Veškerý provoz aplikace je šifrovaný (HTTPS).",
+        },
+        {
+          title: "Děti",
+          body: "Tržby není určeno dětem a vědomě neshromažďujeme údaje od nikoho mladšího 16 let.",
+        },
+        {
+          title: "Kontakt",
+          body: "Dotazy k těmto zásadám nebo k vašim datům: privacy@barbertrzby.cz",
+        },
+      ],
     },
   },
 };
