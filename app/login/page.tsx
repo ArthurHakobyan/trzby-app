@@ -1,5 +1,5 @@
 "use client";
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
@@ -25,7 +25,13 @@ function LoginPageInner() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const deleted = searchParams.get("deleted") === "1";
+  const [showDeleted, setShowDeleted] = useState(searchParams.get("deleted") === "1");
+
+  useEffect(() => {
+    if (!showDeleted) return;
+    const timer = setTimeout(() => setShowDeleted(false), 30000);
+    return () => clearTimeout(timer);
+  }, [showDeleted]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -80,7 +86,7 @@ function LoginPageInner() {
           <div className="auth-card">
             <div className="auth-title">{t.welcomeBack}</div>
             <div className="auth-sub">{t.loginSub}</div>
-            {deleted && <div className="info-banner">{t.accountDeleted}</div>}
+            {showDeleted && <div className="info-banner success">{t.accountDeleted}</div>}
             <form onSubmit={handleSubmit}>
               <div className="field">
                 <label>{t.email}</label>
