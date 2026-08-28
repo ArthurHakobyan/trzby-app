@@ -29,7 +29,7 @@ function LoginPageInner() {
 
   useEffect(() => {
     if (!showDeleted) return;
-    const timer = setTimeout(() => setShowDeleted(false), 30000);
+    const timer = setTimeout(() => setShowDeleted(false), 15000);
     return () => clearTimeout(timer);
   }, [showDeleted]);
 
