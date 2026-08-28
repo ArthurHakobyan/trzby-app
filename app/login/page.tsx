@@ -25,13 +25,15 @@ function LoginPageInner() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [showDeleted, setShowDeleted] = useState(searchParams.get("deleted") === "1");
+  const [banner, setBanner] = useState<"deleted" | "reset" | null>(
+    searchParams.get("deleted") === "1" ? "deleted" : searchParams.get("reset") === "1" ? "reset" : null
+  );
 
   useEffect(() => {
-    if (!showDeleted) return;
-    const timer = setTimeout(() => setShowDeleted(false), 15000);
+    if (!banner) return;
+    const timer = setTimeout(() => setBanner(null), 15000);
     return () => clearTimeout(timer);
-  }, [showDeleted]);
+  }, [banner]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -86,7 +88,8 @@ function LoginPageInner() {
           <div className="auth-card">
             <div className="auth-title">{t.welcomeBack}</div>
             <div className="auth-sub">{t.loginSub}</div>
-            {showDeleted && <div className="info-banner success">{t.accountDeleted}</div>}
+            {banner === "deleted" && <div className="info-banner success">{t.accountDeleted}</div>}
+            {banner === "reset" && <div className="info-banner success">{t.passwordResetSuccess}</div>}
             <form onSubmit={handleSubmit}>
               <div className="field">
                 <label>{t.email}</label>
@@ -101,6 +104,9 @@ function LoginPageInner() {
                 {loading ? t.loggingIn : t.logIn}
               </button>
             </form>
+            <div className="auth-switch">
+              <Link href="/forgot-password">{t.forgotPassword}</Link>
+            </div>
             <div className="auth-switch">
               {t.noAccountYet}<Link href="/register">{t.createOne}</Link>
             </div>

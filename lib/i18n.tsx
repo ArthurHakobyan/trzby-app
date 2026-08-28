@@ -70,6 +70,23 @@ type Translations = {
   deleting: string;
   wrongPassword: string;
   accountDeleted: string;
+  forgotPassword: string;
+  forgotPasswordTitle: string;
+  forgotPasswordSub: string;
+  forgotPasswordSent: string;
+  sendResetLink: string;
+  sending: string;
+  backToLogin: string;
+  resetPasswordTitle: string;
+  resetPasswordSub: string;
+  newPassword: string;
+  confirmNewPassword: string;
+  passwordsDontMatch: string;
+  resetPasswordBtn: string;
+  resetting: string;
+  resetLinkInvalid: string;
+  requestNewLink: string;
+  passwordResetSuccess: string;
   helpPage: {
     title: string;
     subtitle: string;
@@ -158,6 +175,23 @@ const dict: Record<Lang, Translations> = {
     deleting: "Deleting…",
     wrongPassword: "Wrong password.",
     accountDeleted: "Your account has been deleted.",
+    forgotPassword: "Forgot your password?",
+    forgotPasswordTitle: "Reset your password",
+    forgotPasswordSub: "Enter your account email and we'll send you a link to set a new password.",
+    forgotPasswordSent: "If that email has an account, a reset link is on its way.",
+    sendResetLink: "Send reset link",
+    sending: "Sending…",
+    backToLogin: "Back to log in",
+    resetPasswordTitle: "Set a new password",
+    resetPasswordSub: "Choose a new password for your account.",
+    newPassword: "New password",
+    confirmNewPassword: "Confirm new password",
+    passwordsDontMatch: "Passwords don't match.",
+    resetPasswordBtn: "Reset password",
+    resetting: "Resetting…",
+    resetLinkInvalid: "This reset link is invalid or has expired.",
+    requestNewLink: "Request a new link",
+    passwordResetSuccess: "Your password has been reset — log in below.",
     helpPage: {
       title: "How Tržby works",
       subtitle: "A quick guide to logging income, reading your history, and getting more out of your data.",
@@ -266,6 +300,23 @@ const dict: Record<Lang, Translations> = {
     deleting: "Mazání…",
     wrongPassword: "Špatné heslo.",
     accountDeleted: "Váš účet byl smazán.",
+    forgotPassword: "Zapomněli jste heslo?",
+    forgotPasswordTitle: "Obnovení hesla",
+    forgotPasswordSub: "Zadejte e-mail svého účtu a pošleme vám odkaz pro nastavení nového hesla.",
+    forgotPasswordSent: "Pokud k tomuto e-mailu existuje účet, odkaz na obnovení je na cestě.",
+    sendResetLink: "Odeslat odkaz",
+    sending: "Odesílání…",
+    backToLogin: "Zpět na přihlášení",
+    resetPasswordTitle: "Nastavte nové heslo",
+    resetPasswordSub: "Zvolte nové heslo pro svůj účet.",
+    newPassword: "Nové heslo",
+    confirmNewPassword: "Potvrďte nové heslo",
+    passwordsDontMatch: "Hesla se neshodují.",
+    resetPasswordBtn: "Obnovit heslo",
+    resetting: "Obnovování…",
+    resetLinkInvalid: "Tento odkaz je neplatný nebo vypršel.",
+    requestNewLink: "Vyžádat nový odkaz",
+    passwordResetSuccess: "Vaše heslo bylo obnoveno — přihlaste se níže.",
     helpPage: {
       title: "Jak Tržby fungují",
       subtitle: "Stručný průvodce zápisem příjmů, čtením historie a tím, jak z dat vytěžit víc.",
