@@ -1,7 +1,7 @@
 "use client";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useLang } from "@/lib/i18n";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
@@ -10,12 +10,22 @@ import { HeroIllustration, TapIcon, ChartIcon, ExportIcon } from "@/components/L
 const featureIcons = [TapIcon, ChartIcon, ExportIcon];
 
 export default function LoginPage() {
+  return (
+    <Suspense>
+      <LoginPageInner />
+    </Suspense>
+  );
+}
+
+function LoginPageInner() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { t } = useLang();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const deleted = searchParams.get("deleted") === "1";
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -70,6 +80,7 @@ export default function LoginPage() {
           <div className="auth-card">
             <div className="auth-title">{t.welcomeBack}</div>
             <div className="auth-sub">{t.loginSub}</div>
+            {deleted && <div className="info-banner">{t.accountDeleted}</div>}
             <form onSubmit={handleSubmit}>
               <div className="field">
                 <label>{t.email}</label>

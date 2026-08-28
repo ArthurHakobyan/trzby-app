@@ -3,11 +3,13 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useLang } from "@/lib/i18n";
 import FeedbackModal from "@/components/FeedbackModal";
+import DeleteAccountModal from "@/components/DeleteAccountModal";
 
 export default function NavMenu() {
   const { t } = useLang();
   const [open, setOpen] = useState(false);
   const [feedbackOpen, setFeedbackOpen] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -48,10 +50,20 @@ export default function NavMenu() {
           >
             {t.feedback}
           </button>
+          <button
+            className="nav-dropdown-item danger-text"
+            onClick={() => {
+              setDeleteOpen(true);
+              setOpen(false);
+            }}
+          >
+            {t.deleteAccount}
+          </button>
         </div>
       )}
 
       <FeedbackModal open={feedbackOpen} onClose={() => setFeedbackOpen(false)} />
+      <DeleteAccountModal open={deleteOpen} onClose={() => setDeleteOpen(false)} />
     </div>
   );
 }

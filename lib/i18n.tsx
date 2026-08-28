@@ -62,6 +62,14 @@ type Translations = {
   close: string;
   menu: string;
   help: string;
+  deleteAccount: string;
+  deleteAccountTitle: string;
+  deleteAccountWarning: string;
+  confirmPassword: string;
+  deleteAccountBtn: string;
+  deleting: string;
+  wrongPassword: string;
+  accountDeleted: string;
   helpPage: {
     title: string;
     subtitle: string;
@@ -142,6 +150,14 @@ const dict: Record<Lang, Translations> = {
     close: "Close",
     menu: "Menu",
     help: "Help",
+    deleteAccount: "Delete account",
+    deleteAccountTitle: "Delete your account?",
+    deleteAccountWarning: "This permanently deletes your account and every entry you've logged. This can't be undone. Enter your password to confirm.",
+    confirmPassword: "Password",
+    deleteAccountBtn: "Delete my account",
+    deleting: "Deleting…",
+    wrongPassword: "Wrong password.",
+    accountDeleted: "Your account has been deleted.",
     helpPage: {
       title: "How Tržby works",
       subtitle: "A quick guide to logging income, reading your history, and getting more out of your data.",
@@ -242,6 +258,14 @@ const dict: Record<Lang, Translations> = {
     close: "Zavřít",
     menu: "Menu",
     help: "Nápověda",
+    deleteAccount: "Smazat účet",
+    deleteAccountTitle: "Smazat váš účet?",
+    deleteAccountWarning: "Tímto trvale smažete svůj účet a všechny zapsané záznamy. Tuto akci nelze vrátit zpět. Pro potvrzení zadejte své heslo.",
+    confirmPassword: "Heslo",
+    deleteAccountBtn: "Smazat můj účet",
+    deleting: "Mazání…",
+    wrongPassword: "Špatné heslo.",
+    accountDeleted: "Váš účet byl smazán.",
     helpPage: {
       title: "Jak Tržby fungují",
       subtitle: "Stručný průvodce zápisem příjmů, čtením historie a tím, jak z dat vytěžit víc.",
