@@ -70,6 +70,11 @@ type Translations = {
   deleting: string;
   wrongPassword: string;
   accountDeleted: string;
+  changeName: string;
+  changeNameTitle: string;
+  changeNameSub: string;
+  saveChanges: string;
+  saving: string;
   forgotPassword: string;
   forgotPasswordTitle: string;
   forgotPasswordSub: string;
@@ -181,6 +186,11 @@ const dict: Record<Lang, Translations> = {
     deleting: "Deleting…",
     wrongPassword: "Wrong password.",
     accountDeleted: "Your account has been deleted.",
+    changeName: "Change name",
+    changeNameTitle: "Change your name",
+    changeNameSub: "This is how you'll be identified in the app.",
+    saveChanges: "Save",
+    saving: "Saving…",
     forgotPassword: "Forgot your password?",
     forgotPasswordTitle: "Reset your password",
     forgotPasswordSub: "Enter your account email and we'll send you a link to set a new password.",
@@ -350,6 +360,11 @@ const dict: Record<Lang, Translations> = {
     deleting: "Mazání…",
     wrongPassword: "Špatné heslo.",
     accountDeleted: "Váš účet byl smazán.",
+    changeName: "Změnit jméno",
+    changeNameTitle: "Změňte své jméno",
+    changeNameSub: "Takto budete identifikováni v aplikaci.",
+    saveChanges: "Uložit",
+    saving: "Ukládání…",
     forgotPassword: "Zapomněli jste heslo?",
     forgotPasswordTitle: "Obnovení hesla",
     forgotPasswordSub: "Zadejte e-mail svého účtu a pošleme vám odkaz pro nastavení nového hesla.",

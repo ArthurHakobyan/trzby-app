@@ -4,12 +4,14 @@ import Link from "next/link";
 import { useLang } from "@/lib/i18n";
 import FeedbackModal from "@/components/FeedbackModal";
 import DeleteAccountModal from "@/components/DeleteAccountModal";
+import ChangeNameModal from "@/components/ChangeNameModal";
 
 export default function NavMenu() {
   const { t } = useLang();
   const [open, setOpen] = useState(false);
   const [feedbackOpen, setFeedbackOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
+  const [changeNameOpen, setChangeNameOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -47,6 +49,15 @@ export default function NavMenu() {
           <button
             className="nav-dropdown-item"
             onClick={() => {
+              setChangeNameOpen(true);
+              setOpen(false);
+            }}
+          >
+            {t.changeName}
+          </button>
+          <button
+            className="nav-dropdown-item"
+            onClick={() => {
               setFeedbackOpen(true);
               setOpen(false);
             }}
@@ -67,6 +78,7 @@ export default function NavMenu() {
 
       <FeedbackModal open={feedbackOpen} onClose={() => setFeedbackOpen(false)} />
       <DeleteAccountModal open={deleteOpen} onClose={() => setDeleteOpen(false)} />
+      <ChangeNameModal open={changeNameOpen} onClose={() => setChangeNameOpen(false)} />
     </div>
   );
 }
