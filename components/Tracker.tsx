@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useMemo, useState, useCallback } from "react";
+import { Fragment, useEffect, useMemo, useState, useCallback } from "react";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useLang } from "@/lib/i18n";
@@ -283,63 +283,61 @@ export default function Tracker({ userName }: { userName: string }) {
               const rec = byDay[d];
               const total = rec.cash + rec.card;
               const dt = new Date(d + "T00:00:00");
+              const isOpen = expandedDay === d;
               return (
-                <div className="day-row" key={d} onClick={() => setExpandedDay(expandedDay === d ? null : d)}>
-                  <div className="day-date">
-                    <span>{weekday[dt.getDay()]} {pad2(dt.getDate())}</span>
-                    <span className="day-entries-note">{t.entriesCount(rec.count)}</span>
+                <Fragment key={d}>
+                  <div
+                    className={`day-row${isOpen ? " active" : ""}`}
+                    onClick={() => setExpandedDay(isOpen ? null : d)}
+                  >
+                    <div className="day-date">
+                      <span>{weekday[dt.getDay()]} {pad2(dt.getDate())}</span>
+                      <span className="day-entries-note">{t.entriesCount(rec.count)}</span>
+                    </div>
+                    <div className="day-bars">
+                      <div className="bar-cash" style={{ width: `${(rec.cash / maxTotal) * 100}%` }} />
+                      <div className="bar-card" style={{ width: `${(rec.card / maxTotal) * 100}%` }} />
+                    </div>
+                    <div className="day-total">
+                      <span>{fmt(total)}</span>
+                      {rec.tip > 0 && <span className="day-tip-note">+{fmt(rec.tip)} {t.tips.toLowerCase()}</span>}
+                    </div>
                   </div>
-                  <div className="day-bars">
-                    <div className="bar-cash" style={{ width: `${(rec.cash / maxTotal) * 100}%` }} />
-                    <div className="bar-card" style={{ width: `${(rec.card / maxTotal) * 100}%` }} />
-                  </div>
-                  <div className="day-total">
-                    <span>{fmt(total)}</span>
-                    {rec.tip > 0 && <span className="day-tip-note">+{fmt(rec.tip)} {t.tips.toLowerCase()}</span>}
-                  </div>
-                </div>
+
+                  {isOpen && (
+                    <div className="day-detail-wrap">
+                      <div className="day-detail">
+                        {rec.list
+                          .slice()
+                          .sort((a, b) => a.createdAt.localeCompare(b.createdAt))
+                          .map((e) => {
+                            const edt = new Date(e.createdAt);
+                            return (
+                              <div className="entry-row" key={e.id}>
+                                <div className="entry-left">
+                                  <span className={`tag ${e.type}`}>{e.type}</span>
+                                  {e.isTip && <span className="tag tip">{t.tip}</span>}
+                                  <span className="entry-time">{pad2(edt.getHours())}:{pad2(edt.getMinutes())}</span>
+                                </div>
+                                <span className="entry-amt">{fmt(e.amount)}</span>
+                              </div>
+                            );
+                          })}
+                      </div>
+                      <div className="totals" style={{ background: "transparent", padding: "10px 4px 4px" }}>
+                        <div className="totals-row" style={{ color: "var(--ink-dim)" }}><span className="lbl"><span className="swatch cash" />{t.cash}</span><span>{fmt(rec.cash)}</span></div>
+                        <div className="totals-row" style={{ color: "var(--ink-dim)" }}><span className="lbl"><span className="swatch card" />{t.card}</span><span>{fmt(rec.card)}</span></div>
+                        <div className="totals-row subtotal" style={{ borderTopColor: "var(--line)", color: "var(--ink-dim)" }}><span>{t.servicesTotal}</span><span>{fmt(rec.cash + rec.card)}</span></div>
+                        <div className="totals-row" style={{ color: "var(--ink-dim)" }}><span className="lbl"><span className="swatch tip" />{t.tips}</span><span>{fmt(rec.tip)}</span></div>
+                        <div className="totals-row grand" style={{ borderTopColor: "var(--line)", color: "var(--ink)" }}><span>{t.dayTotal}</span><span>{fmt(rec.cash + rec.card + rec.tip)}</span></div>
+                      </div>
+                    </div>
+                  )}
+                </Fragment>
               );
             })
           )}
         </div>
-
-        
-
-        {expandedDay && byDay[expandedDay] && (
-  <div className="list-card">
-    <div className="section-label">
-      {(() => {
-        const dt = new Date(expandedDay + "T00:00:00");
-        return `${weekday[dt.getDay()]} ${dt.getDate()} ${monthNames[dt.getMonth()]}`;
-      })()}
-    </div>
-    <div className="day-detail">
-      {byDay[expandedDay].list
-        .slice()
-        .sort((a, b) => a.createdAt.localeCompare(b.createdAt))
-        .map((e) => {
-          const dt = new Date(e.createdAt);
-          return (
-            <div className="entry-row" key={e.id}>
-              <div className="entry-left">
-                <span className={`tag ${e.type}`}>{e.type}</span>
-                {e.isTip && <span className="tag tip">{t.tip}</span>}
-                <span className="entry-time">{pad2(dt.getHours())}:{pad2(dt.getMinutes())}</span>
-              </div>
-              <span className="entry-amt">{fmt(e.amount)}</span>
-            </div>
-          );
-        })}
-    </div>
-    <div className="totals" style={{ background: "transparent", padding: "10px 4px 4px" }}>
-      <div className="totals-row" style={{ color: "var(--ink-dim)" }}><span className="lbl"><span className="swatch cash" />{t.cash}</span><span>{fmt(byDay[expandedDay].cash)}</span></div>
-      <div className="totals-row" style={{ color: "var(--ink-dim)" }}><span className="lbl"><span className="swatch card" />{t.card}</span><span>{fmt(byDay[expandedDay].card)}</span></div>
-      <div className="totals-row subtotal" style={{ borderTopColor: "var(--line)", color: "var(--ink-dim)" }}><span>{t.servicesTotal}</span><span>{fmt(byDay[expandedDay].cash + byDay[expandedDay].card)}</span></div>
-      <div className="totals-row" style={{ color: "var(--ink-dim)" }}><span className="lbl"><span className="swatch tip" />{t.tips}</span><span>{fmt(byDay[expandedDay].tip)}</span></div>
-      <div className="totals-row grand" style={{ borderTopColor: "var(--line)", color: "var(--ink)" }}><span>{t.dayTotal}</span><span>{fmt(byDay[expandedDay].cash + byDay[expandedDay].card + byDay[expandedDay].tip)}</span></div>
-    </div>
-  </div>
-)}
 
 
 
