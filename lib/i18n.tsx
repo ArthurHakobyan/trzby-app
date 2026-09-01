@@ -31,6 +31,9 @@ type Translations = {
   days: string;
   noData: string;
   dayTotal: string;
+  deleteDay: string;
+  deleteDayConfirm: string;
+  cancel: string;
   backup: string;
   csvExport: string;
   backupNote: string;
@@ -147,6 +150,9 @@ const dict: Record<Lang, Translations> = {
     days: "Days",
     noData: "No income logged this month.",
     dayTotal: "Day total",
+    deleteDay: "Delete day",
+    deleteDayConfirm: "Delete this whole day? This can't be undone.",
+    cancel: "Cancel",
     backup: "Backup",
     csvExport: "⤓ CSV (this month)",
     backupNote: "Your data lives in the database, tied to your account — no manual backup needed to avoid losing it. Export CSV anytime for your own records.",
@@ -321,6 +327,9 @@ const dict: Record<Lang, Translations> = {
     days: "Dny",
     noData: "Tento měsíc nejsou žádné záznamy.",
     dayTotal: "Denní součet",
+    deleteDay: "Smazat den",
+    deleteDayConfirm: "Smazat celý tento den? Tuto akci nelze vrátit zpět.",
+    cancel: "Zrušit",
     backup: "Zálohování",
     csvExport: "⤓ CSV (tento měsíc)",
     backupNote: "Vaše data jsou uložena v databázi a jsou svázaná s vaším účtem — ruční záloha není potřeba. Export CSV si můžete stáhnout kdykoli pro vlastní evidenci.",

@@ -49,3 +49,24 @@ export async function POST(req: Request) {
 
   return NextResponse.json(entry, { status: 201 });
 }
+
+// DELETE /api/entries?date=2026-08-15  -> deletes all of that user's entries for that day
+export async function DELETE(req: Request) {
+  const session = await getServerSession(authOptions);
+  if (!session?.user?.id) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const { searchParams } = new URL(req.url);
+  const date = searchParams.get("date"); // "YYYY-MM-DD"
+
+  if (!date) {
+    return NextResponse.json({ error: "Missing date." }, { status: 400 });
+  }
+
+  await prisma.entry.deleteMany({
+    where: { userId: session.user.id, date },
+  });
+
+  return NextResponse.json({ ok: true });
+}

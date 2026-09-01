@@ -33,6 +33,7 @@ export default function Tracker({ userName }: { userName: string }) {
   const [selMonth, setSelMonth] = useState(new Date().getMonth());
   const [selYear, setSelYear] = useState(new Date().getFullYear());
   const [expandedDay, setExpandedDay] = useState<string | null>(null);
+  const [confirmDeleteDay, setConfirmDeleteDay] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   const today = useMemo(() => dateKey(new Date()), []);
@@ -71,6 +72,13 @@ export default function Tracker({ userName }: { userName: string }) {
 
   async function removeEntry(id: string) {
     await fetch(`/api/entries/${id}`, { method: "DELETE" });
+    loadMonth(selYear, selMonth);
+  }
+
+  async function deleteDay(date: string) {
+    await fetch(`/api/entries?date=${date}`, { method: "DELETE" });
+    setExpandedDay(null);
+    setConfirmDeleteDay(null);
     loadMonth(selYear, selMonth);
   }
 
@@ -248,6 +256,7 @@ export default function Tracker({ userName }: { userName: string }) {
             className="nav-btn"
             onClick={() => {
               setExpandedDay(null);
+              setConfirmDeleteDay(null);
               if (selMonth === 0) { setSelMonth(11); setSelYear((y) => y - 1); } else setSelMonth((m) => m - 1);
             }}
           >‹</button>
@@ -256,6 +265,7 @@ export default function Tracker({ userName }: { userName: string }) {
             className="nav-btn"
             onClick={() => {
               setExpandedDay(null);
+              setConfirmDeleteDay(null);
               if (selMonth === 11) { setSelMonth(0); setSelYear((y) => y + 1); } else setSelMonth((m) => m + 1);
             }}
           >›</button>
@@ -288,7 +298,10 @@ export default function Tracker({ userName }: { userName: string }) {
                 <Fragment key={d}>
                   <div
                     className={`day-row${isOpen ? " active" : ""}`}
-                    onClick={() => setExpandedDay(isOpen ? null : d)}
+                    onClick={() => {
+                      setExpandedDay(isOpen ? null : d);
+                      setConfirmDeleteDay(null);
+                    }}
                   >
                     <div className="day-date">
                       <span>{weekday[dt.getDay()]} {pad2(dt.getDate())}</span>
@@ -330,6 +343,19 @@ export default function Tracker({ userName }: { userName: string }) {
                         <div className="totals-row subtotal" style={{ borderTopColor: "var(--line)", color: "var(--ink-dim)" }}><span>{t.servicesTotal}</span><span>{fmt(rec.cash + rec.card)}</span></div>
                         <div className="totals-row" style={{ color: "var(--ink-dim)" }}><span className="lbl"><span className="swatch tip" />{t.tips}</span><span>{fmt(rec.tip)}</span></div>
                         <div className="totals-row grand" style={{ borderTopColor: "var(--line)", color: "var(--ink)" }}><span>{t.dayTotal}</span><span>{fmt(rec.cash + rec.card + rec.tip)}</span></div>
+                      </div>
+                      <div className="day-delete-row">
+                        {confirmDeleteDay === d ? (
+                          <>
+                            <span className="day-delete-warning">{t.deleteDayConfirm}</span>
+                            <div className="day-delete-actions">
+                              <button className="day-delete-cancel" onClick={() => setConfirmDeleteDay(null)}>{t.cancel}</button>
+                              <button className="day-delete-confirm" onClick={() => deleteDay(d)}>{t.deleteDay}</button>
+                            </div>
+                          </>
+                        ) : (
+                          <button className="day-delete-btn" onClick={() => setConfirmDeleteDay(d)}>{t.deleteDay}</button>
+                        )}
                       </div>
                     </div>
                   )}
