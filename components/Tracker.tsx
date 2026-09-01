@@ -1,7 +1,5 @@
 "use client";
 import { Fragment, useEffect, useMemo, useState, useCallback } from "react";
-import { signOut } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import { useLang } from "@/lib/i18n";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import NavMenu from "@/components/NavMenu";
@@ -24,7 +22,6 @@ export default function Tracker({ userName }: { userName: string }) {
   const { t } = useLang();
   const weekday = t.weekday;
   const monthNames = t.monthNames;
-  const router = useRouter();
   const [tab, setTab] = useState<"today" | "history">("today");
   const [amount, setAmount] = useState("");
   const [isTip, setIsTip] = useState(false);
@@ -156,16 +153,6 @@ export default function Tracker({ userName }: { userName: string }) {
         <div className="topbar-actions">
           <LanguageSwitcher />
           <NavMenu />
-          <button
-            className="signout"
-            onClick={async () => {
-              await signOut({ redirect: false });
-              router.push("/login");
-              router.refresh();
-            }}
-          >
-            {t.logOut}
-          </button>
         </div>
       </div>
 

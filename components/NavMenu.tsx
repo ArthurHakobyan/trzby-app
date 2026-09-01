@@ -1,6 +1,8 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useLang } from "@/lib/i18n";
 import FeedbackModal from "@/components/FeedbackModal";
 import DeleteAccountModal from "@/components/DeleteAccountModal";
@@ -8,6 +10,7 @@ import ChangeNameModal from "@/components/ChangeNameModal";
 
 export default function NavMenu() {
   const { t } = useLang();
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [feedbackOpen, setFeedbackOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
@@ -64,6 +67,17 @@ export default function NavMenu() {
           <Link href="/privacy" className="nav-dropdown-item" onClick={() => setOpen(false)}>
             {t.privacyLink}
           </Link>
+          <button
+            className="nav-dropdown-item"
+            onClick={async () => {
+              setOpen(false);
+              await signOut({ redirect: false });
+              router.push("/login");
+              router.refresh();
+            }}
+          >
+            {t.logOut}
+          </button>
           <button
             className="nav-dropdown-item danger-text"
             onClick={() => {
