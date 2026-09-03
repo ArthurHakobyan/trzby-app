@@ -182,7 +182,12 @@ export default function Tracker({ userName }: { userName: string }) {
           <div className="keypad">
             {["1","2","3","4","5","6","7","8","9","C","0","⌫"].map((k) => (
               <button key={k} className={`key ${k === "C" || k === "⌫" ? "func" : ""}`} onClick={() => pressKey(k)}>
-                {k}
+                {k === "⌫" ? (
+                  <svg viewBox="0 0 24 24" width="1.15em" height="1.15em" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M9 4h9a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H9l-7-8 7-8z" />
+                    <path d="M15 10l-5 5M10 10l5 5" />
+                  </svg>
+                ) : k}
               </button>
             ))}
           </div>
