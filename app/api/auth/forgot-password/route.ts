@@ -20,6 +20,7 @@ export async function POST(req: Request) {
 
   const body = await readJson(req);
   const email = body?.email;
+  const lang = body?.lang === "en" ? "en" : "cs";
   const normalizedEmail = typeof email === "string" ? email.toLowerCase().trim() : "";
 
   // Always return a generic success response, whether or not the account exists,
@@ -50,7 +51,7 @@ export async function POST(req: Request) {
 
     const resetUrl = `${process.env.NEXTAUTH_URL}/reset-password?token=${rawToken}`;
     try {
-      await sendPasswordResetEmail(user.email, resetUrl);
+      await sendPasswordResetEmail(user.email, resetUrl, lang);
     } catch (err) {
       console.error("Failed to send password reset email:", err);
     }

@@ -1,16 +1,32 @@
 import { Resend } from "resend";
 
-export async function sendPasswordResetEmail(to: string, resetUrl: string) {
+export async function sendPasswordResetEmail(to: string, resetUrl: string, lang: "en" | "cs" = "cs") {
   const resend = new Resend(process.env.RESEND_API_KEY);
+
+  const content = lang === "en"
+    ? {
+        subject: "Reset your Tržby password",
+        html: `
+          <p>Someone requested a password reset for your Tržby account.</p>
+          <p><a href="${resetUrl}">Click here to set a new password</a>. This link expires in 1 hour.</p>
+          <p>If you didn't request this, you can safely ignore this email.</p>
+          <p>Don't see this email? Check your spam or junk folder.</p>
+        `,
+      }
+    : {
+        subject: "Obnovení hesla Tržby",
+        html: `
+          <p>Někdo požádal o obnovení hesla k vašemu účtu Tržby.</p>
+          <p><a href="${resetUrl}">Klikněte sem a nastavte si nové heslo</a>. Odkaz vyprší za 1 hodinu.</p>
+          <p>Pokud jste o to nežádali, tento e-mail můžete bez obav ignorovat.</p>
+          <p>Nevidíte tento e-mail? Zkontrolujte složku Spam nebo Nevyžádaná pošta.</p>
+        `,
+      };
+
   await resend.emails.send({
     from: process.env.RESEND_FROM || "Tržby <noreply@barbertrzby.cz>",
     to,
-    subject: "Reset your Tržby password",
-    html: `
-      <p>Someone requested a password reset for your Tržby account.</p>
-      <p><a href="${resetUrl}">Click here to set a new password</a>. This link expires in 1 hour.</p>
-      <p>If you didn't request this, you can safely ignore this email.</p>
-    `,
+    ...content,
   });
 }
 

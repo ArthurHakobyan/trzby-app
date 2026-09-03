@@ -5,7 +5,7 @@ import { useLang } from "@/lib/i18n";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 export default function ForgotPasswordPage() {
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "sending" | "sent">("idle");
 
@@ -15,7 +15,7 @@ export default function ForgotPasswordPage() {
     await fetch("/api/auth/forgot-password", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email }),
+      body: JSON.stringify({ email, lang }),
     });
     setStatus("sent");
   }
