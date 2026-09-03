@@ -2,6 +2,7 @@ import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
+import { rateLimit, getClientIp } from "@/lib/rate-limit";
 
 export const authOptions: NextAuthOptions = {
   session: { strategy: "jwt" },
@@ -15,11 +16,20 @@ export const authOptions: NextAuthOptions = {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials) {
+      async authorize(credentials, req) {
         if (!credentials?.email || !credentials?.password) return null;
 
+        const email = credentials.email.toLowerCase().trim();
+        const ip = getClientIp(req?.headers);
+
+        // Broad per-IP cap guards against credential stuffing across many
+        // accounts; the tighter per-IP+email cap guards against brute-forcing
+        // one account's password.
+        if (!rateLimit(`login:ip:${ip}`, 20, 5 * 60 * 1000).ok) return null;
+        if (!rateLimit(`login:ip-email:${ip}:${email}`, 5, 5 * 60 * 1000).ok) return null;
+
         const user = await prisma.user.findUnique({
-          where: { email: credentials.email.toLowerCase().trim() },
+          where: { email },
         });
         if (!user) return null;
 
