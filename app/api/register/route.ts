@@ -19,7 +19,7 @@ export async function POST(req: Request) {
   if (!body) {
     return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
   }
-  const { name, email, password } = body;
+  const { name, email, password, lang } = body;
 
   if (!email || !password || password.length < 6) {
     return NextResponse.json(
@@ -39,7 +39,7 @@ export async function POST(req: Request) {
     data: { name: name || null, email: normalizedEmail, password: hashed },
   });
 
-  await issueEmailVerification(user.id, user.email);
+  await issueEmailVerification(user.id, user.email, lang === "en" ? "en" : "cs");
 
   return NextResponse.json({ id: user.id, email: user.email });
 }

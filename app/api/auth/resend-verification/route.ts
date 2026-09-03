@@ -17,6 +17,7 @@ export async function POST(req: Request) {
 
   const body = await readJson(req);
   const email = body?.email;
+  const lang = body?.lang === "en" ? "en" : "cs";
   const normalizedEmail = typeof email === "string" ? email.toLowerCase().trim() : "";
 
   // Always return a generic success response, whether or not the account
@@ -33,7 +34,7 @@ export async function POST(req: Request) {
 
   const user = await prisma.user.findUnique({ where: { email: normalizedEmail } });
   if (user && !user.emailVerified) {
-    await issueEmailVerification(user.id, user.email);
+    await issueEmailVerification(user.id, user.email, lang);
   }
 
   return NextResponse.json({ ok: true });

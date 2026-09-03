@@ -4,7 +4,7 @@ import { sendVerificationEmail } from "@/lib/email";
 
 const TOKEN_TTL_MS = 24 * 60 * 60 * 1000; // 24 hours
 
-export async function issueEmailVerification(userId: string, email: string) {
+export async function issueEmailVerification(userId: string, email: string, lang: "en" | "cs" = "cs") {
   const rawToken = crypto.randomBytes(32).toString("hex");
   const tokenHash = crypto.createHash("sha256").update(rawToken).digest("hex");
 
@@ -18,7 +18,7 @@ export async function issueEmailVerification(userId: string, email: string) {
 
   const verifyUrl = `${process.env.NEXTAUTH_URL}/verify-email?token=${rawToken}`;
   try {
-    await sendVerificationEmail(email, verifyUrl);
+    await sendVerificationEmail(email, verifyUrl, lang);
   } catch (err) {
     console.error("Failed to send verification email:", err);
   }
