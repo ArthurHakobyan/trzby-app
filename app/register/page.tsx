@@ -1,19 +1,17 @@
 "use client";
 import { useState } from "react";
-import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useLang } from "@/lib/i18n";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 export default function RegisterPage() {
-  const router = useRouter();
   const { t } = useLang();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [sent, setSent] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -25,20 +23,29 @@ export default function RegisterPage() {
       body: JSON.stringify({ name, email, password }),
     });
     const data = await res.json();
+    setLoading(false);
     if (!res.ok) {
       setError(data.error || t.somethingWrong);
-      setLoading(false);
       return;
     }
-    const signInRes = await signIn("credentials", { email, password, redirect: false });
-    setLoading(false);
-    if (signInRes?.error) {
-      setError(t.accountCreatedPleaseLogin);
-      router.push("/login");
-    } else {
-      router.push("/");
-      router.refresh();
-    }
+    setSent(true);
+  }
+
+  if (sent) {
+    return (
+      <div className="auth-shell">
+        <div className="auth-top">
+          <LanguageSwitcher />
+        </div>
+        <div className="auth-card">
+          <div className="auth-title">{t.createAccountTitle}</div>
+          <div className="info-banner success">{t.verifyEmailSent}</div>
+          <div className="auth-switch">
+            <Link href="/login">{t.backToLogin}</Link>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (

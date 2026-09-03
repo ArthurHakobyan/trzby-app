@@ -25,6 +25,8 @@ function LoginPageInner() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [needsVerification, setNeedsVerification] = useState(false);
+  const [resendStatus, setResendStatus] = useState<"idle" | "sending" | "sent">("idle");
   const [banner, setBanner] = useState<"deleted" | "reset" | null>(
     searchParams.get("deleted") === "1" ? "deleted" : searchParams.get("reset") === "1" ? "reset" : null
   );
@@ -38,15 +40,30 @@ function LoginPageInner() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
+    setNeedsVerification(false);
+    setResendStatus("idle");
     setLoading(true);
     const res = await signIn("credentials", { email, password, redirect: false });
     setLoading(false);
-    if (res?.error) {
+    if (res?.error === "EmailNotVerified") {
+      setError(t.emailNotVerified);
+      setNeedsVerification(true);
+    } else if (res?.error) {
       setError(t.wrongCredentials);
     } else {
       router.push("/");
       router.refresh();
     }
+  }
+
+  async function handleResend() {
+    setResendStatus("sending");
+    await fetch("/api/auth/resend-verification", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
+    });
+    setResendStatus("sent");
   }
 
   return (
@@ -100,6 +117,21 @@ function LoginPageInner() {
                 <input type="password" required value={password} onChange={(e) => setPassword(e.target.value)} />
               </div>
               {error && <div className="auth-error">{error}</div>}
+              {needsVerification && (
+                resendStatus === "sent" ? (
+                  <div className="info-banner success">{t.resendVerificationSent}</div>
+                ) : (
+                  <button
+                    type="button"
+                    className="auth-switch"
+                    style={{ background: "none", border: "none", cursor: "pointer", padding: 0, textDecoration: "underline" }}
+                    disabled={resendStatus === "sending"}
+                    onClick={handleResend}
+                  >
+                    {t.resendVerification}
+                  </button>
+                )
+              )}
               <button className="auth-btn" disabled={loading} type="submit">
                 {loading ? t.loggingIn : t.logIn}
               </button>

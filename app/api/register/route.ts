@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 import { rateLimit, getClientIp } from "@/lib/rate-limit";
+import { issueEmailVerification } from "@/lib/verification";
+import { readJson } from "@/lib/read-json";
 
 export async function POST(req: Request) {
   const ip = getClientIp(req.headers);
@@ -13,7 +15,11 @@ export async function POST(req: Request) {
     );
   }
 
-  const { name, email, password } = await req.json();
+  const body = await readJson(req);
+  if (!body) {
+    return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
+  }
+  const { name, email, password } = body;
 
   if (!email || !password || password.length < 6) {
     return NextResponse.json(
@@ -32,6 +38,8 @@ export async function POST(req: Request) {
   const user = await prisma.user.create({
     data: { name: name || null, email: normalizedEmail, password: hashed },
   });
+
+  await issueEmailVerification(user.id, user.email);
 
   return NextResponse.json({ id: user.id, email: user.email });
 }

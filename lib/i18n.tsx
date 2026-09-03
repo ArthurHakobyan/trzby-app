@@ -52,7 +52,6 @@ type Translations = {
   creating: string;
   createAccountBtn: string;
   somethingWrong: string;
-  accountCreatedPleaseLogin: string;
   alreadyHaveAccount: string;
   feedback: string;
   feedbackTitle: string;
@@ -95,6 +94,14 @@ type Translations = {
   resetLinkInvalid: string;
   requestNewLink: string;
   passwordResetSuccess: string;
+  verifyEmailTitle: string;
+  verifyEmailSent: string;
+  verifying: string;
+  verifiedSuccess: string;
+  verifyLinkInvalid: string;
+  emailNotVerified: string;
+  resendVerification: string;
+  resendVerificationSent: string;
   helpPage: {
     title: string;
     subtitle: string;
@@ -171,7 +178,6 @@ const dict: Record<Lang, Translations> = {
     creating: "Creating…",
     createAccountBtn: "Create account",
     somethingWrong: "Something went wrong.",
-    accountCreatedPleaseLogin: "Account created — please log in.",
     alreadyHaveAccount: "Already have an account? ",
     feedback: "Feedback",
     feedbackTitle: "Got a suggestion?",
@@ -214,6 +220,14 @@ const dict: Record<Lang, Translations> = {
     resetLinkInvalid: "This reset link is invalid or has expired.",
     requestNewLink: "Request a new link",
     passwordResetSuccess: "Your password has been reset — log in below.",
+    verifyEmailTitle: "Verify your email",
+    verifyEmailSent: "Account created — check your email for a link to verify your account before logging in.",
+    verifying: "Verifying…",
+    verifiedSuccess: "Your email is verified — you can log in now.",
+    verifyLinkInvalid: "This verification link is invalid or has expired.",
+    emailNotVerified: "Please verify your email before logging in — check your inbox for the link.",
+    resendVerification: "Resend verification email",
+    resendVerificationSent: "If that email has an unverified account, a new verification link is on its way.",
     helpPage: {
       title: "How Tržby works",
       subtitle: "A quick guide to logging income, reading your history, and getting more out of your data.",
@@ -348,7 +362,6 @@ const dict: Record<Lang, Translations> = {
     creating: "Vytváření…",
     createAccountBtn: "Vytvořit účet",
     somethingWrong: "Něco se pokazilo.",
-    accountCreatedPleaseLogin: "Účet vytvořen — přihlaste se prosím.",
     alreadyHaveAccount: "Už máte účet? ",
     feedback: "Zpětná vazba",
     feedbackTitle: "Máte nápad na vylepšení?",
@@ -391,6 +404,14 @@ const dict: Record<Lang, Translations> = {
     resetLinkInvalid: "Tento odkaz je neplatný nebo vypršel.",
     requestNewLink: "Vyžádat nový odkaz",
     passwordResetSuccess: "Vaše heslo bylo obnoveno — přihlaste se níže.",
+    verifyEmailTitle: "Ověřte svůj e-mail",
+    verifyEmailSent: "Účet vytvořen — zkontrolujte svůj e-mail a klikněte na odkaz pro ověření účtu před přihlášením.",
+    verifying: "Ověřování…",
+    verifiedSuccess: "Váš e-mail je ověřen — nyní se můžete přihlásit.",
+    verifyLinkInvalid: "Tento ověřovací odkaz je neplatný nebo vypršel.",
+    emailNotVerified: "Před přihlášením prosím ověřte svůj e-mail — zkontrolujte schránku, kam jsme poslali odkaz.",
+    resendVerification: "Znovu odeslat ověřovací e-mail",
+    resendVerificationSent: "Pokud má tento e-mail neověřený účet, nový ověřovací odkaz je na cestě.",
     helpPage: {
       title: "Jak Tržby fungují",
       subtitle: "Stručný průvodce zápisem příjmů, čtením historie a tím, jak z dat vytěžit víc.",

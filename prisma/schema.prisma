@@ -8,17 +8,30 @@ datasource db {
 }
 
 model User {
-  id                  String               @id @default(cuid())
-  name                String?
-  email               String               @unique
-  password            String
-  createdAt           DateTime             @default(now())
-  entries             Entry[]
-  feedback            Feedback[]
-  passwordResetTokens PasswordResetToken[]
+  id                      String                   @id @default(cuid())
+  name                    String?
+  email                   String                   @unique
+  password                String
+  emailVerified           DateTime?
+  createdAt               DateTime                 @default(now())
+  entries                 Entry[]
+  feedback                Feedback[]
+  passwordResetTokens     PasswordResetToken[]
+  emailVerificationTokens EmailVerificationToken[]
 }
 
 model PasswordResetToken {
+  id        String   @id @default(cuid())
+  tokenHash String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model EmailVerificationToken {
   id        String   @id @default(cuid())
   tokenHash String   @unique
   expiresAt DateTime

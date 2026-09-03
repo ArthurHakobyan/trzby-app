@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { readJson } from "@/lib/read-json";
 
 // PATCH /api/account  { name }
 export async function PATCH(req: Request) {
@@ -11,7 +12,8 @@ export async function PATCH(req: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { name } = await req.json();
+  const body = await readJson(req);
+  const name = body?.name;
   const trimmed = typeof name === "string" ? name.trim() : "";
 
   if (trimmed.length > 60) {
@@ -33,7 +35,8 @@ export async function DELETE(req: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { password } = await req.json();
+  const body = await readJson(req);
+  const password = body?.password;
   if (typeof password !== "string" || !password) {
     return NextResponse.json({ error: "Password is required." }, { status: 400 });
   }

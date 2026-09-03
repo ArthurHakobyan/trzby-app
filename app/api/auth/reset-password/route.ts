@@ -2,10 +2,13 @@ import { NextResponse } from "next/server";
 import crypto from "crypto";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
+import { readJson } from "@/lib/read-json";
 
 // POST /api/auth/reset-password  { token, password }
 export async function POST(req: Request) {
-  const { token, password } = await req.json();
+  const body = await readJson(req);
+  const token = body?.token;
+  const password = body?.password;
 
   if (typeof token !== "string" || !token || typeof password !== "string" || password.length < 6) {
     return NextResponse.json(

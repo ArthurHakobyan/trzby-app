@@ -3,6 +3,7 @@ import crypto from "crypto";
 import { prisma } from "@/lib/prisma";
 import { sendPasswordResetEmail } from "@/lib/email";
 import { rateLimit, getClientIp } from "@/lib/rate-limit";
+import { readJson } from "@/lib/read-json";
 
 const TOKEN_TTL_MS = 60 * 60 * 1000; // 1 hour
 
@@ -17,7 +18,8 @@ export async function POST(req: Request) {
     );
   }
 
-  const { email } = await req.json();
+  const body = await readJson(req);
+  const email = body?.email;
   const normalizedEmail = typeof email === "string" ? email.toLowerCase().trim() : "";
 
   // Always return a generic success response, whether or not the account exists,

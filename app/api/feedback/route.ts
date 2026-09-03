@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { readJson } from "@/lib/read-json";
 
 // POST /api/feedback  { message }
 export async function POST(req: Request) {
@@ -10,7 +11,8 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { message } = await req.json();
+  const body = await readJson(req);
+  const message = body?.message;
   const trimmed = typeof message === "string" ? message.trim() : "";
 
   if (!trimmed || trimmed.length > 2000) {

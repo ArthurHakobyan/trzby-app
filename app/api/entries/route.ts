@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { readJson } from "@/lib/read-json";
 
 // GET /api/entries?month=2026-08  -> all entries for that user in that month
 export async function GET(req: Request) {
@@ -31,7 +32,11 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { amount, type, date, isTip } = await req.json();
+  const body = await readJson(req);
+  if (!body) {
+    return NextResponse.json({ error: "Invalid entry." }, { status: 400 });
+  }
+  const { amount, type, date, isTip } = body;
 
   if (!amount || amount <= 0 || !["cash", "card"].includes(type) || !date) {
     return NextResponse.json({ error: "Invalid entry." }, { status: 400 });
